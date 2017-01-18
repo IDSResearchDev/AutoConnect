@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="WindowTextStyle" TargetType="{x:Type Window}">
+        <Setter Property="TextElement.FontFamily" Value="Font/Open-sans/#OpenSans-Light.ttf,Font/#Roboto,Segoe UI,Tahoma,sans-serif,Lucida Grande,Verdana,Arial" />
+        <Setter Property="TextElement.FontSize" Value="13" />
+    </Style>
+
+
+</ResourceDictionary>

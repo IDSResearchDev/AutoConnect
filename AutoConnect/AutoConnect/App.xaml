@@ -2,8 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AutoConnect"
-             StartupUri="MainWindow.xaml">
+             StartupUri="View/ACMainView.xaml">
+
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Rnd.Theme.Bootstrap;component/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="CustomGray" Color="#e6e6e6" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
