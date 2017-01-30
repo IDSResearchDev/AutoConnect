@@ -5,81 +5,103 @@
         xmlns:local="clr-namespace:AutoConnect.BaseClass"
         xmlns:localview="clr-namespace:AutoConnect.View"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:usrctrl="clr-namespace:AutoConnect.View.UserControls"
         Title="{Binding Title}"
-        Width="716.377"
-        Height="528.772"
+        Width="882.347"
+        Height="600"
         local:ViewModelLocator.AutoViewModel="True"
-        
         mc:Ignorable="d">
 
     <DockPanel LastChildFill="True">
-        <Grid DockPanel.Dock="Top" />
+        <Grid Height="40" DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40*" />
+            </Grid.RowDefinitions>
+            <StackPanel />
+        </Grid>
         <Grid Background="{StaticResource CustomGray}" DockPanel.Dock="Bottom">
             <Border Grid.Row="2"
-                BorderBrush="{StaticResource NormalBorderBrush}"
-                BorderThickness="0,1,0,0">
+                    BorderBrush="{StaticResource NormalBorderBrush}"
+                    BorderThickness="0,1,0,0">
                 <Grid Margin="10,0,20,0">
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBox Name="txtbox"
+                                 Margin="5,10,5,10"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 FontSize="11.5" />
+                        <TextBlock Name="txtblock"
+                                   Margin="5,10,5,10"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="11.5" />
                         <TextBlock Name="TxtGetUpdate"
-                               Margin="5,10,5,10"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="11.5"
-                               Text="{Binding GetUpdate}" />
+                                   Margin="5,10,5,10"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="11.5"
+                                   Text="{Binding Text,
+                                                  ElementName=txtbox}" />
                         <Button Name="BtnCheckUpdate"
-                            Margin="0,10,5,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="{Binding CheckUpdate}"
-                            Content="{Binding CheckForUpdate}"
-                            FontSize="11.5"
-                            IsTabStop="False"
-                            Style="{x:Null}"
-                            TextBlock.Foreground="#FF0774B2" />
+                                Margin="0,10,5,10"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding CheckUpdate}"
+                                Content="{Binding CheckForUpdate}"
+                                FontSize="11.5"
+                                IsTabStop="False"
+                                Style="{x:Null}"
+                                TextBlock.Foreground="#FF0774B2" />
                         <Button Name="BtnSettings"
-                            Margin="5,10,5,10"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Background="Transparent"
-                            BorderThickness="0"
-                            Command="{Binding ViewUpdateSetting}"
-                            Content="Settings"
-                            FontSize="11.5"
-                            IsTabStop="False"
-                            Style="{x:Null}"
-                            TextBlock.Foreground="#FF0774B2" />
+                                Margin="5,10,5,10"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding ViewUpdateSetting}"
+                                Content="Settings"
+                                FontSize="11.5"
+                                IsTabStop="False"
+                                Style="{x:Null}"
+                                TextBlock.Foreground="#FF0774B2" />
 
                     </StackPanel>
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Width="85"
-                            Height="25"
-                            Margin="5,10,5,10"
-                            Command="{Binding Analyze}"
-                            Content="Analyze"
-                            FontSize="12" />
+                                Height="25"
+                                Margin="5,10,5,10"
+                                Command="{Binding Analyze}"
+                                Content="Analyze"
+                                FontSize="12" />
                         <Button Width="85"
-                            Height="25"
-                            Margin="5,10,5,10"
-                            Command="{Binding Apply}"
-                            Content="Apply"
-                            FontSize="12"
-                            Style="{StaticResource PrimaryButton}" />
+                                Height="25"
+                                Margin="5,10,5,10"
+                                Command="{Binding Apply}"
+                                Content="Apply"
+                                FontSize="12"
+                                Style="{StaticResource PrimaryButton}" />
                         <Button Width="85"
-                            Height="25"
-                            Margin="5,10,5,10"
-                            Command="{Binding Exit}"
-                            Content="Close"
-                            FontSize="12"
-                            Style="{StaticResource PrimaryButton}" />
+                                Height="25"
+                                Margin="5,10,5,10"
+                                Command="{Binding Exit}"
+                                Content="Close"
+                                FontSize="12"
+                                Style="{StaticResource PrimaryButton}" />
                     </StackPanel>
 
                 </Grid>
             </Border>
         </Grid>
-        <ScrollViewer>
-            <StackPanel x:Name="StackPopulate"></StackPanel>
+
+        <ScrollViewer Height="Auto">
+            <StackPanel x:Name="StackPopulate">
+                <usrctrl:UstCtrlBeamToBeamWeb x:Name="b2bw" />
+                <usrctrl:UsrCtrlBeamToColumnFlange x:Name="b2cf" />
+                <usrctrl:UsrCtrlBeamToColumnWeb x:Name="b2cw" />
+            </StackPanel>
         </ScrollViewer>
+
     </DockPanel>
 </Window>

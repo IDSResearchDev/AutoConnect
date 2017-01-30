@@ -52,6 +52,9 @@ namespace AutoConnect.Model
 
     public class ConnectionSetting
     {
+        public int PrimaryId { get; set; }
+        public int SecondaryId { get; set; }
+        public int[] SecondaryIds { get; set; }
         public object PrimaryObject { get; set; }
         public bool IsSingleConnection { get; set; }
         public object SecondaryObject { get; set; }
@@ -59,5 +62,7 @@ namespace AutoConnect.Model
         public string ConnectionType { get; set; }
         public int Component { get; set; }
         public string AngleType { get; set; }
+
+        public string ConnectingObjects { get; set; }
     }
 }

@@ -222,7 +222,7 @@ namespace AutoConnect.Model
             }
 
             model.CommitChanges();
-            Console.ReadKey();
+            //Console.ReadKey();
 
         }
 
@@ -295,7 +295,8 @@ namespace AutoConnect.Model
                             }
                             else
                             {
-                                ValidateCollection(key, multi[i].Secondary.ObjSource);
+                                //ValidateCollection(key, multi[i].Secondary.ObjSource);
+                                ValidateCollection(key, multi[i].Secondary);
                                 // add single connection
                                 // check beam-flange / beam-web
                                 //Console.WriteLine(CreateConnection(key.Primary.ObjSource, multi[i].Secondary.ObjSource, 141, code));
@@ -311,6 +312,11 @@ namespace AutoConnect.Model
             }
         }
 
+        private string GetConnectedObjects(string primary, string secondary) {
+           
+            return string.Concat(primary," >>> ",secondary);
+        }
+
         private void ValidateCollection(ConnectionInfo key, List<ConnectionInfo> perLevel)
         {
             var pos = key.Primary.ObjSource.Position.Rotation.ToString();
@@ -319,8 +325,11 @@ namespace AutoConnect.Model
             {
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
+                PrimaryId = key.PrimaryId,
                 SecondaryObject = perLevel[0].Secondary.ObjSource,
-                SecondaryObjects = null
+                SecondaryId = perLevel[0].Secondary.Id,
+                SecondaryObjects = null,
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), perLevel[0].Secondary.Id.ToString())
             };
             //AddToCollection(key.PrimaryType, pos, axis, pair);
             if (key.PrimaryType == "BEAM")
@@ -343,14 +352,17 @@ namespace AutoConnect.Model
             }
         }
 
-        private void ValidateCollection(ConnectionInfo key, Beam secondary)
+        private void ValidateCollection(ConnectionInfo key, Line secondary)
         {
+            var pos = key.Primary.ObjSource.Position.Rotation.ToString();
+            var axis = secondary.Type;
             var pair1 = new ConnectionSetting
             {
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
-                SecondaryObject = secondary,
-                SecondaryObjects = null
+                SecondaryObject = secondary.ObjSource,
+                SecondaryObjects = null,
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), secondary.Id.ToString())
             };
             //AddToCollection(key.PrimaryType, pair1);
             if (key.PrimaryType == "BEAM")
@@ -360,9 +372,31 @@ namespace AutoConnect.Model
             }
             else
             {
-                pair1.ConnectionType = "B2CF";
-                BeamToColumnFlangeColl.Add(pair1);
+                if ((axis == LineType.Vertical && pos == "TOP") || (axis == LineType.Horizontal && pos == "FRONT"))
+                {
+                    pair1.ConnectionType = "B2CW";
+                    BeamToColumnWebColl.Add(pair1);
+                }
+                else
+                {
+                    pair1.ConnectionType = "B2CF";
+                    BeamToColumnFlangeColl.Add(pair1);
+                }
+                //pair1.ConnectionType = "B2CF";
+                //BeamToColumnFlangeColl.Add(pair1);
             }
+        }
+
+        private int[] ParseSecondaryIds(ArrayList arr)
+        {
+            int[] ids = new int[arr.Count];
+            int index = 0;
+            foreach (var i in arr)
+            {
+                ids[index] = ((Beam)i).Identifier.ID;
+                index++;
+            }
+            return ids;
         }
 
         private void ValidateCollection(ConnectionInfo key, ArrayList arr)
@@ -371,24 +405,34 @@ namespace AutoConnect.Model
             {
                 IsSingleConnection = false,
                 PrimaryObject = key.Primary.ObjSource,
+                PrimaryId = key.PrimaryId,
+                SecondaryIds = ParseSecondaryIds(arr),
                 SecondaryObject = null,
-                SecondaryObjects = arr
+                SecondaryObjects = arr,
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), ((Beam)arr[0]).Identifier.ID.ToString())
             };
 
             var pair1 = new ConnectionSetting
             {
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
+                PrimaryId = key.PrimaryId,               
                 SecondaryObject = arr[0],
-                SecondaryObjects = null
+                SecondaryId = ((Beam)arr[0]).Identifier.ID,
+                SecondaryObjects = null,
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), $"{((Beam)arr[0]).Identifier.ID.ToString()} >>> {((Beam)arr[1]).Identifier.ID.ToString()}" )
+
             };
 
             var pair2 = new ConnectionSetting
             {
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
+                PrimaryId = key.PrimaryId,
                 SecondaryObject = arr[1],
-                SecondaryObjects = null
+                SecondaryId = ((Beam)arr[1]).Identifier.ID,
+                SecondaryObjects = null,
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), ((Beam)arr[1]).Identifier.ID.ToString())
             };
             //AddToCollection(key.PrimaryType, multiCon, pair1, pair2);
 

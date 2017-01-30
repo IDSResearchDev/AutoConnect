@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AutoConnect.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -46,6 +49,14 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Tekla.Structures, Version=2016.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Tekla.Structures\v4.0_21.1.0.0__2f04dbe497b71114\Tekla.Structures.dll</HintPath>
+    </Reference>
+    <Reference Include="Tekla.Structures.Model, Version=2016.0.0.0, Culture=neutral, PublicKeyToken=2f04dbe497b71114, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Tekla.Structures.Model\v4.0_21.1.0.0__2f04dbe497b71114\Tekla.Structures.Model.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -57,14 +68,30 @@
     </ApplicationDefinition>
     <Compile Include="BaseClass\BindableBase.cs" />
     <Compile Include="BaseClass\DelegateCommand.cs" />
+    <Compile Include="BaseClass\ValueConverters.cs" />
     <Compile Include="BaseClass\ViewModelLocator.cs" />
+    <Compile Include="Converters\EnumDescriptionConverter.cs" />
     <Compile Include="Enums\ComponentEnum.cs" />
+    <Compile Include="Model\CollectionPair.cs" />
+    <Compile Include="Model\ConnectionChecker.cs" />
+    <Compile Include="Model\ConnectionInfo.cs" />
+    <Compile Include="Model\ConnectionModel.cs" />
+    <Compile Include="Model\LineChecker.cs" />
     <Compile Include="ViewModel\ACMainViewModel.cs" />
     <Compile Include="View\ACMainView.xaml.cs">
       <DependentUpon>ACMainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\FrameOrientations.xaml.cs">
-      <DependentUpon>FrameOrientations.xaml</DependentUpon>
+    <Compile Include="View\UserControls\FrameOrientation.xaml.cs">
+      <DependentUpon>FrameOrientation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\UsrCtrlBeamToColumnFlange.xaml.cs">
+      <DependentUpon>UsrCtrlBeamToColumnFlange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\UsrCtrlBeamToColumnWeb.xaml.cs">
+      <DependentUpon>UsrCtrlBeamToColumnWeb.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\UsrCtrlBeamToBeamWeb.xaml.cs">
+      <DependentUpon>UsrCtrlBeamToBeamWeb.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
@@ -77,7 +104,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\FrameOrientations.xaml">
+    <Page Include="View\UserControls\FrameOrientation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\UsrCtrlBeamToColumnFlange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\UsrCtrlBeamToColumnWeb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\UsrCtrlBeamToBeamWeb.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,9 +152,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Rnd.Theme.Bootstrap\Rnd.Theme.Bootstrap.csproj">
       <Project>{d5f6dbad-eb28-4098-a3d6-8d6c89b13fcb}</Project>

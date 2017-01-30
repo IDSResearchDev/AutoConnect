@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace AutoConnect.View.UserControls
 {
     /// <summary>
-    /// Interaction logic for FrameOrientations.xaml
+    /// Interaction logic for UstCtrlBeamToBeamWeb.xaml
     /// </summary>
-    public partial class FrameOrientations : UserControl
+    public partial class UstCtrlBeamToBeamWeb : UserControl
     {
-        public FrameOrientations()
+        public UstCtrlBeamToBeamWeb()
         {
             InitializeComponent();
         }
