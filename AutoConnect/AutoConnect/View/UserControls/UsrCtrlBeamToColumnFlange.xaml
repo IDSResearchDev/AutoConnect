@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:vm="clr-namespace:AutoConnect.ViewModel"
+             xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
              Width="Auto"
              Height="Auto"
              mc:Ignorable="d">
@@ -69,7 +70,16 @@
 
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox />
+                                    <CheckBox >
+                                        <interact:Interaction.Triggers>
+                                            <interact:EventTrigger EventName="Checked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}"  CommandParameter="{Binding Path=ConnectingObjects}"/>
+                                            </interact:EventTrigger>
+                                            <interact:EventTrigger EventName="Unchecked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                            </interact:EventTrigger>
+                                        </interact:Interaction.Triggers>
+                                    </CheckBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

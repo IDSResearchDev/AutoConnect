@@ -7,6 +7,8 @@ using AutoConnect.BaseClass;
 using AutoConnect.Model;
 using AutoConnect.View;
 using AutoConnect.View.UserControls;
+using Tekla.Structures;
+using Tekla.Structures.Model;
 
 namespace AutoConnect.ViewModel
 {
@@ -158,8 +160,40 @@ namespace AutoConnect.ViewModel
             }
         }
 
-     
+        public ICommand CheckBox_CheckChanged
+        {
+            get
+            {
+                return new DelegateCommand((Text) =>
+                {
+                    var source = Text as string;
+                    if(source != null)
+                    {
+                        var ids = source.Replace(" >>> ", "|").Split('|');
+                        ArrayList arr = new ArrayList();
+                        foreach (var a in ids)
+                        {
+                            Beam b = new Beam
+                            {
+                                Identifier = { ID = Convert.ToInt32(a) }
+                            };
+                            arr.Add(b);
+                        }
+
+                        var model = new Tekla.Structures.Model.Model();
+
+                        Tekla.Structures.Model.UI.ModelObjectSelector Selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
+                        Selector.Select(arr);
+                    }
+                    
+
+                });
+            }
+        }
+
+
         #endregion
+        
 
         public void CreateModelObjects()
         {

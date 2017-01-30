@@ -62,7 +62,7 @@ namespace AutoConnect.Model
         {
 
             var model = new Tekla.Structures.Model.Model();
-            var modelObjSelector = new TSMU.ModelObjectSelector();
+            var modelObjSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
             var selectedObj = modelObjSelector.GetSelectedObjects();
 
             var objlist = new List<Beam>();
@@ -305,7 +305,7 @@ namespace AutoConnect.Model
                     }
                     else
                     {
-                        ValidateCollection(key, perLevel);
+                        ValidateCollection(key, perLevel[0].Secondary);
                     }
                 }
 
