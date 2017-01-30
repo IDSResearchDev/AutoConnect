@@ -7,9 +7,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:usrctrl="clr-namespace:AutoConnect.View.UserControls"
         Title="{Binding Title}"
-        Width="882.347"
+        Width="757.847"
         Height="600"
         local:ViewModelLocator.AutoViewModel="True"
+        ResizeMode="NoResize"
         mc:Ignorable="d">
 
     <DockPanel LastChildFill="True">
@@ -25,16 +26,6 @@
                     BorderThickness="0,1,0,0">
                 <Grid Margin="10,0,20,0">
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                        <TextBox Name="txtbox"
-                                 Margin="5,10,5,10"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Center"
-                                 FontSize="11.5" />
-                        <TextBlock Name="txtblock"
-                                   Margin="5,10,5,10"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="11.5" />
                         <TextBlock Name="TxtGetUpdate"
                                    Margin="5,10,5,10"
                                    HorizontalAlignment="Left"
@@ -97,9 +88,10 @@
 
         <ScrollViewer Height="Auto">
             <StackPanel x:Name="StackPopulate">
-                <usrctrl:UstCtrlBeamToBeamWeb x:Name="b2bw" />
+                <usrctrl:FrameOrientation x:Name="FrameOrientation" Width="Auto" />
+                <!--<usrctrl:UstCtrlBeamToBeamWeb x:Name="b2bw" />
                 <usrctrl:UsrCtrlBeamToColumnFlange x:Name="b2cf" />
-                <usrctrl:UsrCtrlBeamToColumnWeb x:Name="b2cw" />
+                <usrctrl:UsrCtrlBeamToColumnWeb x:Name="b2cw" />-->
             </StackPanel>
         </ScrollViewer>
 

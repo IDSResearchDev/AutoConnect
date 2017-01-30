@@ -68,10 +68,9 @@
     </ApplicationDefinition>
     <Compile Include="BaseClass\BindableBase.cs" />
     <Compile Include="BaseClass\DelegateCommand.cs" />
-    <Compile Include="BaseClass\ValueConverters.cs" />
     <Compile Include="BaseClass\ViewModelLocator.cs" />
     <Compile Include="Converters\EnumDescriptionConverter.cs" />
-    <Compile Include="Enums\ComponentEnum.cs" />
+    <Compile Include="Enums\ComponentSettingsEnum.cs" />
     <Compile Include="Model\CollectionPair.cs" />
     <Compile Include="Model\ConnectionChecker.cs" />
     <Compile Include="Model\ConnectionInfo.cs" />
@@ -92,9 +91,6 @@
     </Compile>
     <Compile Include="View\UserControls\UsrCtrlBeamToBeamWeb.xaml.cs">
       <DependentUpon>UsrCtrlBeamToBeamWeb.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -117,10 +113,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\UserControls\UsrCtrlBeamToBeamWeb.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

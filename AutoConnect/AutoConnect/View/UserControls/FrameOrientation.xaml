@@ -6,19 +6,37 @@
              xmlns:local="clr-namespace:AutoConnect.View.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:usrctrl="clr-namespace:AutoConnect.View.UserControls"
              xmlns:vm="clr-namespace:AutoConnect.ViewModel"
              Width="Auto"
              Height="Auto"
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <!--<ObjectDataProvider x:Key="enumValues"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type system:Enum}">
+        <!--  Component Types  -->
+        <ObjectDataProvider x:Key="enumComponentTypes"
+                            MethodName="GetComponentTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:ExampleEnum" />
+                <x:Type TypeName="enum:ComponentType" />
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>-->
+        </ObjectDataProvider>
+        <!--  Bolt/Weld Orientation Types  -->
+        <ObjectDataProvider x:Key="enumBoltWeldOrientation"
+                            MethodName="GetBoltWeldOrientation"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:BoltWeldOrientation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--  Angle Types  -->
+        <ObjectDataProvider x:Key="enumAngleTypes"
+                            MethodName="GetAngleTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:Angle" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </UserControl.Resources>
 
     <UserControl.DataContext>
@@ -28,212 +46,9 @@
 
 
     <StackPanel Height="Auto" Orientation="Vertical">
-        <Grid Width="Auto">
-            <Grid.RowDefinitions>
-
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid x:Name="GridHandler">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel>
-                    <TextBlock Width="Auto"
-                               Height="25"
-                               VerticalAlignment="Center"
-                               Text="Beam to Beam Web"
-                               TextAlignment="Center" />
-                </StackPanel>
-                <ListView Grid.Row="1"
-                          Width="Auto"
-                          Height="Auto"
-                          VerticalAlignment="Center"
-                          HorizontalContentAlignment="Center"
-                          ItemsSource="{Binding BeamToBeamWebCollection}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="40">
-
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="200"
-                                            DisplayMemberBinding="{Binding Path=ConnectingObjects}"
-                                            Header="Objects" />
-                            <GridViewColumn Width="150" Header="Components">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbComponents"
-                                                  Width="135"
-                                                  ItemsSource="{Binding Path=ComponentTypes}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Types">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbTypes" Width="135" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Angle">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbAngle" Width="135" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-            <Grid x:Name="GridHandler2" Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel>
-                    <TextBlock Width="Auto"
-                               Height="25"
-                               VerticalAlignment="Center"
-                               AutomationProperties.IsRowHeader="True"
-                               Text="Beam to Column Flange"
-                               TextAlignment="Center" />
-                </StackPanel>
-                <ListView Grid.Row="1"
-                          Width="Auto"
-                          Height="Auto"
-                          VerticalAlignment="Center"
-                          HorizontalContentAlignment="Center"
-                          ItemsSource="{Binding BeamToColumnFlangeCollection}"
-                          SelectedIndex="0">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="40">
-
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="200" Header="Objects">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Width="Auto"
-                                                   Height="Auto"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Path=ConnectingObjects}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Components">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbComponents"
-                                                  Width="135"
-                                                  ItemsSource="{Binding Path=components}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Types">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbTypes"
-                                                  Width="135"
-                                                  ItemsSource="{Binding Path=types}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Angle">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbAngle"
-                                                  Width="135"
-                                                  ItemsSource="{Binding Path=angles}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-            <Grid x:Name="GridHandler3" Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel>
-                    <TextBlock Width="Auto"
-                               Height="25"
-                               VerticalAlignment="Center"
-                               Text="Beam to Column Web"
-                               TextAlignment="Center" />
-                </StackPanel>
-                <ListView Grid.Row="1"
-                          Width="Auto"
-                          Height="Auto"
-                          VerticalAlignment="Center"
-                          HorizontalContentAlignment="Center"
-                          ItemsSource="{Binding BeamToColumnWebCollection}"
-                          SelectedIndex="0">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Width="40">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="200" Header="Objects">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Width="Auto"
-                                                   Height="Auto"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Text="{Binding Path=ConnectingObjects}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Components">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbComponents" Width="135" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Types">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbTypes" Width="135" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Width="150" Header="Angle">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ComboBox x:Name="cmbAngle" Width="135" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-
-        </Grid>
+        <usrctrl:UstCtrlBeamToBeamWeb x:Name="SubCtrlBeamToBeamWeb" Margin="10" />
+        <usrctrl:UsrCtrlBeamToColumnWeb x:Name="SubCtrlBeamToColumWeb" Margin="10" />
+        <usrctrl:UsrCtrlBeamToColumnFlange x:Name="SubCtrlBeamToColumFlange" Margin="10" />
 
     </StackPanel>
 

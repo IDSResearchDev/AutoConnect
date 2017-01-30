@@ -12,14 +12,32 @@
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <!--<ObjectDataProvider x:Key="enumValues"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type system:Enum}">
+        <!--  Component Types  -->
+        <ObjectDataProvider x:Key="enumComponentTypes"
+                            MethodName="GetComponentTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:ExampleEnum" />
+                <x:Type TypeName="enum:ComponentType" />
             </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>-->
+        </ObjectDataProvider>
+        <!--  Bolt/Weld Orientation Types  -->
+        <ObjectDataProvider x:Key="enumBoltWeldOrientation"
+                            MethodName="GetBoltWeldOrientation"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:BoltWeldOrientation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--  Angle Types  -->
+        <ObjectDataProvider x:Key="enumAngleTypes"
+                            MethodName="GetAngleTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:Angle" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
     </UserControl.Resources>
+
 
     <UserControl.DataContext>
         <vm:ACMainViewModel x:Name="vm" />
@@ -27,18 +45,18 @@
 
     <Grid Width="Auto">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel>
+        <StackPanel Grid.Row="1">
             <TextBlock Width="Auto"
                        Height="25"
                        VerticalAlignment="Center"
-                       AutomationProperties.IsRowHeader="True"
                        Text="Beam to Column Flange"
-                       TextAlignment="Center" />
+                       TextAlignment="Center" FontWeight="Bold" FontSize="14"/>
         </StackPanel>
-        <Grid x:Name="GridHandler" Grid.Row="1">
+        <Grid x:Name="GridHandler" Grid.Row="2">
             <ListView Width="Auto"
                       Height="Auto"
                       VerticalAlignment="Center"
@@ -71,7 +89,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmbComponents"
                                               Width="135"
-                                              ItemsSource="{Binding Path=components}" />
+                                              ItemsSource="{Binding Source={StaticResource enumComponentTypes}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -80,7 +98,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmbTypes"
                                               Width="135"
-                                              ItemsSource="{Binding Path=types}" />
+                                              ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -89,7 +107,7 @@
                                 <DataTemplate>
                                     <ComboBox x:Name="cmbAngle"
                                               Width="135"
-                                              ItemsSource="{Binding Path=angles}" />
+                                              ItemsSource="{Binding Source={StaticResource enumAngleTypes}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

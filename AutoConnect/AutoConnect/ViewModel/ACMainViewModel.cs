@@ -10,31 +10,6 @@ using AutoConnect.View.UserControls;
 
 namespace AutoConnect.ViewModel
 {
-    public class Temp
-    {
-        public string Nene { get; set; }
-        public ObservableCollection<string> components { get; set; }
-        public ObservableCollection<string> types { get; set; }
-        public ObservableCollection<string> angles { get; set; }
-
-        public Temp()
-        {
-            components = new ObservableCollection<string>()
-            {
-                "141","142","413","144"
-            };
-
-            types = new ObservableCollection<string>()
-            {
-                "Welded/Bolted","Bolted/Bolted","Bolted/Welded","Welded/Welded"
-            };
-
-            angles = new ObservableCollection<string>()
-            {
-                "Single Clip", "Double Clip"
-            };
-        }
-    }
     
     public class Data
     {
@@ -194,26 +169,11 @@ namespace AutoConnect.ViewModel
 
             System.Windows.Window win = this.GetCurrentWindow();
             _mainView = (ACMainView)win;
-            _mainView.b2bw.vm.BeamToBeamWebCollection = con.BeamToBeamWebColl;
-            _mainView.b2cw.vm.BeamToColumnWebCollection = con.BeamToColumnWebColl;
-            _mainView.b2cf.vm.BeamToColumnFlangeCollection = con.BeamToColumnFlangeColl;
 
-
-            ComponentTypes = new ObservableCollection<string>()
-            {
-                "143","147","183"
-            };
-
-
-            //MyClass = con.BeamToColumnWebColl;
-            //for (int i = 0; i < 4; i++)
-            //{
-            //UsrCtrlBeamToColumnWeb usrctrl = new UsrCtrlBeamToColumnWeb();
-            //usrctrl.vm.MyClass = con.BeamToColumnWebColl;
-            //_mainView.StackPopulate.Children.Add(usrctrl);
-            //}
-
-
+            _mainView.FrameOrientation.SubCtrlBeamToBeamWeb.vm.BeamToBeamWebCollection = con.BeamToBeamWebColl;
+            _mainView.FrameOrientation.SubCtrlBeamToColumWeb.vm.BeamToColumnWebCollection = con.BeamToColumnWebColl;
+            _mainView.FrameOrientation.SubCtrlBeamToColumFlange.vm.BeamToColumnFlangeCollection = con.BeamToColumnFlangeColl;
+            
         }
 
         private bool CheckVisibility(ObservableCollection<ConnectionSetting> collection)
