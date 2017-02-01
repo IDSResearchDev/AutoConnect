@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoConnect.Converters;
 
 namespace AutoConnect.Model
 {
@@ -52,6 +53,7 @@ namespace AutoConnect.Model
 
     public class ConnectionSetting
     {
+        public bool IsChecked { get; set; }
         public int PrimaryId { get; set; }
         public int SecondaryId { get; set; }
         public int[] SecondaryIds { get; set; }
@@ -60,9 +62,30 @@ namespace AutoConnect.Model
         public object SecondaryObject { get; set; }
         public ArrayList SecondaryObjects { get; set; }
         public string ConnectionType { get; set; }
-        public int Component { get; set; }
+        public string Component { get; set; }
+        public string BoltWeldOrientation { get; set; }
         public string AngleType { get; set; }
+
 
         public string ConnectingObjects { get; set; }
     }
+
+    //public class ConnectionSetting
+    //{
+    //    public bool IsChecked { get; set; }
+    //    public int PrimaryId { get; set; }
+    //    public int SecondaryId { get; set; }
+    //    public int[] SecondaryIds { get; set; }
+    //    public object PrimaryObject { get; set; }
+    //    public bool IsSingleConnection { get; set; }
+    //    public object SecondaryObject { get; set; }
+    //    public ArrayList SecondaryObjects { get; set; }
+    //    public string ConnectionType { get; set; }
+    //    public ComponentType Component { get; set; }
+    //    public BoltWeldOrientation BoltWeldOrientation { get; set; }
+    //    public AngleTypes AngleType { get; set; }
+
+
+    //    public string ConnectingObjects { get; set; }
+    //}
 }

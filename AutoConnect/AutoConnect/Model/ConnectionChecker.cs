@@ -11,6 +11,7 @@ using TSMU = Tekla.Structures.Model.UI;
 
 namespace AutoConnect.Model
 {
+    
     public class ConnectionChecker
     {
         private ObservableCollection<ConnectionSetting> _beamToBeamWebColl;
@@ -60,7 +61,6 @@ namespace AutoConnect.Model
 
         public void Process()
         {
-
             var model = new Tekla.Structures.Model.Model();
             var modelObjSelector = new Tekla.Structures.Model.UI.ModelObjectSelector();
             var selectedObj = modelObjSelector.GetSelectedObjects();
@@ -409,7 +409,8 @@ namespace AutoConnect.Model
                 SecondaryIds = ParseSecondaryIds(arr),
                 SecondaryObject = null,
                 SecondaryObjects = arr,
-                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), ((Beam)arr[0]).Identifier.ID.ToString())
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), $"{((Beam)arr[0]).Identifier.ID.ToString()} >>> {((Beam)arr[1]).Identifier.ID.ToString()}")
+                
             };
 
             var pair1 = new ConnectionSetting
@@ -420,7 +421,7 @@ namespace AutoConnect.Model
                 SecondaryObject = arr[0],
                 SecondaryId = ((Beam)arr[0]).Identifier.ID,
                 SecondaryObjects = null,
-                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), $"{((Beam)arr[0]).Identifier.ID.ToString()} >>> {((Beam)arr[1]).Identifier.ID.ToString()}" )
+                ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), ((Beam)arr[0]).Identifier.ID.ToString())
 
             };
 
@@ -460,21 +461,26 @@ namespace AutoConnect.Model
             }
         }
 
-        public bool CreateConnection(Beam primary, Beam secondary, int component, string code)
+        public bool CreateConnection(Beam primary, Beam secondary, int component, string code, int boltweldstype, int angletype)
         {
+
             var beamsize = GetSecondaryBeamProfile(secondary);
             var attribute = string.Concat(code, "_", beamsize);
+
             try
             {
-
+               
                 Tekla.Structures.Model.Connection C = new Tekla.Structures.Model.Connection();
-                C.Name = "Test End Plate";
+                //C.Name = "Test End Plate";
                 C.Number = component;
-                C.LoadAttributesFromFile("standard");
+                C.LoadAttributesFromFile(attribute);
 
                 C.SetPrimaryObject(primary);
                 C.SetSecondaryObject(secondary);
                 C.PositionType = PositionTypeEnum.COLLISION_PLANE;
+
+                //C.SetAttribute("btab5",angletype);//angle
+                //C.SetAttribute("atab1",boltweldstype);//bolts/welds
 
                 if (!C.Insert())
                 {
@@ -495,10 +501,11 @@ namespace AutoConnect.Model
                 Console.WriteLine(x.GetBaseException().Message);
                 return false;
             }
+           
 
         }
 
-        public bool CreateConnection(Beam primary, ArrayList secondaries, int component, string code)
+        public bool CreateConnection(Beam primary, ArrayList secondaries, int component, string code, int boltwelds, int angletype)
         {
             var beamsize = GetSecondaryBeamProfile(((Beam)secondaries[0]));
             var attribute = string.Concat(code, "_", beamsize);
@@ -506,16 +513,17 @@ namespace AutoConnect.Model
             {
 
                 Tekla.Structures.Model.Connection C = new Tekla.Structures.Model.Connection();
-                C.Name = "Test End Plate";
+               // C.Name = "Test End Plate";
                 C.Number = component;
-                C.LoadAttributesFromFile("standard");
+                C.LoadAttributesFromFile(attribute);
 
                 C.SetPrimaryObject(primary);
                 C.SetSecondaryObjects(secondaries);
-
-                //C.UpVector = new Vector(0, 0, 1000);
+                
                 C.PositionType = PositionTypeEnum.COLLISION_PLANE;
 
+                //C.SetAttribute("btab5",angletype);//angle
+                //C.SetAttribute("atab1",boltweldstype);//bolts/welds
 
 
                 if (!C.Insert())
@@ -540,6 +548,7 @@ namespace AutoConnect.Model
 
         }
 
+        //ref
         public bool CreateConnection(Beam primary, Beam secondary)
         {
             var beamsize = GetSecondaryBeamProfile(secondary);

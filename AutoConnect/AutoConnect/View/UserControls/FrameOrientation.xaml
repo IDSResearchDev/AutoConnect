@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:enum="clr-namespace:AutoConnect.Enums"
+             xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:AutoConnect.View.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
@@ -43,15 +44,250 @@
         <vm:ACMainViewModel x:Name="vm" />
     </UserControl.DataContext>
 
-
-
     <StackPanel Height="Auto" Orientation="Vertical">
-        <usrctrl:UstCtrlBeamToBeamWeb x:Name="SubCtrlBeamToBeamWeb" Margin="10" />
-        <usrctrl:UsrCtrlBeamToColumnWeb x:Name="SubCtrlBeamToColumWeb" Margin="10" />
-        <usrctrl:UsrCtrlBeamToColumnFlange x:Name="SubCtrlBeamToColumFlange" Margin="10" />
+        <Grid x:Name="GridB2BW"
+              Width="Auto"
+              Height="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Width="Auto"
+                           Height="25"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Text="Beam to Beam Web"
+                           TextAlignment="Center" />
+            </StackPanel>
+            <ListView Grid.Row="1"
+                      Width="Auto"
+                      Height="Auto"
+                      VerticalAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding BeamToBeamWebCollection}"
+                      SelectedIndex="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="40">
 
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox>
+                                        <interact:Interaction.Triggers>
+                                            <interact:EventTrigger EventName="Checked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                            </interact:EventTrigger>
+                                            <interact:EventTrigger EventName="Unchecked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                            </interact:EventTrigger>
+                                        </interact:Interaction.Triggers>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200"
+                                        DisplayMemberBinding="{Binding Path=ConnectingObjects}"
+                                        Header="Objects" />
+                        <GridViewColumn Width="150" Header="Components">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbComponents"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumComponentTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Types">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbTypes"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Angle">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbAngle"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumAngleTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+        <Grid x:Name="GridB2CW"
+              Width="Auto"
+              Height="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Width="Auto"
+                           Height="25"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Text="Beam to Column Web"
+                           TextAlignment="Center" />
+            </StackPanel>
+            <ListView Grid.Row="1"
+                      Width="Auto"
+                      Height="Auto"
+                      VerticalAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding BeamToColumnWebCollection}"
+                      SelectedIndex="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="40">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox>
+                                        <interact:Interaction.Triggers>
+                                            <interact:EventTrigger EventName="Checked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                            </interact:EventTrigger>
+                                            <interact:EventTrigger EventName="Unchecked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                            </interact:EventTrigger>
+                                        </interact:Interaction.Triggers>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200" Header="Objects">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Width="Auto"
+                                               Height="Auto"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=ConnectingObjects}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Components">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbComponents"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumComponentTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Types">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbTypes"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Angle">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbAngle"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumAngleTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid x:Name="GridB2CF"
+              Width="Auto"
+              Height="Auto">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Width="Auto"
+                           Height="25"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Text="Beam to Column Flange"
+                           TextAlignment="Center" />
+            </StackPanel>
+            <ListView Grid.Row="1"
+                      Width="Auto"
+                      Height="Auto"
+                      VerticalAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding BeamToColumnFlangeCollection}"
+                      SelectedIndex="0">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="40">
+
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox>
+                                        <interact:Interaction.Triggers>
+                                            <interact:EventTrigger EventName="Checked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                            </interact:EventTrigger>
+                                            <interact:EventTrigger EventName="Unchecked">
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                            </interact:EventTrigger>
+                                        </interact:Interaction.Triggers>
+                                    </CheckBox>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="200" Header="Objects">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Width="Auto"
+                                               Height="Auto"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=ConnectingObjects}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Components">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbComponents"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumComponentTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Types">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbTypes"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Width="150" Header="Angle">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox x:Name="cmbAngle"
+                                              Width="135"
+                                              ItemsSource="{Binding Source={StaticResource enumAngleTypes}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
     </StackPanel>
-
-
-
 </UserControl>

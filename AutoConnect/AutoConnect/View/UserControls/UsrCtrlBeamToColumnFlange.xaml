@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:enum="clr-namespace:AutoConnect.Enums"
+             xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:AutoConnect.View.UserControls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:vm="clr-namespace:AutoConnect.ViewModel"
-             xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
              Width="Auto"
              Height="Auto"
              mc:Ignorable="d">
@@ -54,8 +54,10 @@
             <TextBlock Width="Auto"
                        Height="25"
                        VerticalAlignment="Center"
+                       FontSize="14"
+                       FontWeight="Bold"
                        Text="Beam to Column Flange"
-                       TextAlignment="Center" FontWeight="Bold" FontSize="14"/>
+                       TextAlignment="Center" />
         </StackPanel>
         <Grid x:Name="GridHandler" Grid.Row="2">
             <ListView Width="Auto"
@@ -70,10 +72,10 @@
 
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox >
+                                    <CheckBox>
                                         <interact:Interaction.Triggers>
                                             <interact:EventTrigger EventName="Checked">
-                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}"  CommandParameter="{Binding Path=ConnectingObjects}"/>
+                                                <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
                                             </interact:EventTrigger>
                                             <interact:EventTrigger EventName="Unchecked">
                                                 <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />

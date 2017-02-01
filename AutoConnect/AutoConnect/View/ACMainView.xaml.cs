@@ -23,5 +23,6 @@ namespace AutoConnect.View
         {
             InitializeComponent();
         }
+        
     }
 }

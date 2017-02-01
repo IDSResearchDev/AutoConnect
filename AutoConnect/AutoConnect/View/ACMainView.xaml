@@ -1,17 +1,53 @@
 ﻿<Window x:Class="AutoConnect.View.ACMainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Converters="clr-namespace:AutoConnect.Converters"
+        xmlns:converter="clr-namespace:AutoConnect.Converters"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:enum="clr-namespace:AutoConnect.Enums"
+        xmlns:interact="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:AutoConnect.BaseClass"
         xmlns:localview="clr-namespace:AutoConnect.View"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:usrctrl="clr-namespace:AutoConnect.View.UserControls"
+        xmlns:vm="clr-namespace:AutoConnect.ViewModel"
+        x:Name="window"
         Title="{Binding Title}"
         Width="757.847"
         Height="600"
-        local:ViewModelLocator.AutoViewModel="True"
         ResizeMode="NoResize"
         mc:Ignorable="d">
+    <!--  local:ViewModelLocator.AutoViewModel="True"  -->
+    <Window.Resources>
+        <!--  Component Types  -->
+        <ObjectDataProvider x:Key="enumComponentTypes"
+                            MethodName="GetComponentTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ComponentType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--  Bolt/Weld Orientation Types  -->
+        <ObjectDataProvider x:Key="enumBoltWeldOrientation"
+                            MethodName="GetBoltWeldOrientation"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:BoltWeldOrientation" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <!--  Angle Types  -->
+        <ObjectDataProvider x:Key="enumAngleTypes"
+                            MethodName="GetAngleTypeDescription"
+                            ObjectType="{x:Type enum:ComponentSettingsEnum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:Angle" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <vm:ACMainViewModel x:Name="vm" />
+    </Window.DataContext>
 
     <DockPanel LastChildFill="True">
         <Grid Height="40" DockPanel.Dock="Top">
@@ -26,14 +62,7 @@
                     BorderThickness="0,1,0,0">
                 <Grid Margin="10,0,20,0">
                     <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                        <TextBlock Name="TxtGetUpdate"
-                                   Margin="5,10,5,10"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="11.5"
-                                   Text="{Binding Text,
-                                                  ElementName=txtbox}" />
-                        <Button Name="BtnCheckUpdate"
+                        <Button x:Name="BtnCheckUpdate"
                                 Margin="0,10,5,10"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
@@ -45,7 +74,7 @@
                                 IsTabStop="False"
                                 Style="{x:Null}"
                                 TextBlock.Foreground="#FF0774B2" />
-                        <Button Name="BtnSettings"
+                        <Button x:Name="BtnSettings"
                                 Margin="5,10,5,10"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
@@ -87,11 +116,317 @@
         </Grid>
 
         <ScrollViewer Height="Auto">
-            <StackPanel x:Name="StackPopulate">
-                <usrctrl:FrameOrientation x:Name="FrameOrientation" Width="Auto" />
-                <!--<usrctrl:UstCtrlBeamToBeamWeb x:Name="b2bw" />
-                <usrctrl:UsrCtrlBeamToColumnFlange x:Name="b2cf" />
-                <usrctrl:UsrCtrlBeamToColumnWeb x:Name="b2cw" />-->
+            <StackPanel x:Name="StackPopulate"
+                        Height="Auto"
+                        Orientation="Vertical">
+                <!--<usrctrl:FrameOrientation x:Name="FrameOrientation" Width="Auto" />-->
+
+                <Grid x:Name="GridB2BW"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0,15,0,15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Beam Web"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <ListView Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              VerticalAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              ItemsSource="{Binding BeamToBeamWebCollection}"
+                              SelectedIndex="0">
+
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="checkbox" IsChecked="{Binding IsChecked}">
+                                                <interact:Interaction.Triggers>
+                                                    <interact:EventTrigger EventName="Checked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                                    </interact:EventTrigger>
+                                                    <interact:EventTrigger EventName="Unchecked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_UnChecked, ElementName=vm}" CommandParameter="{Binding ElementName=checkbox}" />
+                                                    </interact:EventTrigger>
+                                                </interact:Interaction.Triggers>
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="200"
+                                                DisplayMemberBinding="{Binding ConnectingObjects}"
+                                                Header="Objects" />
+                                <GridViewColumn Width="150" Header="Components">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbComponents"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
+                                                      SelectedValue="{Binding Component}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                                      SelectedValue="{Binding Component}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Types">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbTypes"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                                      SelectedValuePath="Value" />
+
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Angle">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbAngle"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
+                                                      SelectedValue="{Binding AngleType}" />-->
+
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                                      SelectedValue="{Binding AngleType}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                </Grid>
+                <Grid x:Name="GridB2CW"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0,15,0,15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Column Web"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <ListView Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              VerticalAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              ItemsSource="{Binding BeamToColumnWebCollection}"
+                              SelectedIndex="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsChecked}">
+                                                <interact:Interaction.Triggers>
+                                                    <interact:EventTrigger EventName="Checked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding ConnectingObjects}" />
+                                                    </interact:EventTrigger>
+                                                    <interact:EventTrigger EventName="Unchecked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" />
+                                                    </interact:EventTrigger>
+                                                </interact:Interaction.Triggers>
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="200" Header="Objects">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="Auto"
+                                                       Height="Auto"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding ConnectingObjects}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Components">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbComponents"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
+                                                      SelectedValue="{Binding Component}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                                      SelectedValue="{Binding Component}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Types">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbTypes"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Angle">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbAngle"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
+                                                      SelectedValue="{Binding AngleType}" />-->
+
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                                      SelectedValue="{Binding AngleType}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+                <Grid x:Name="GridB2CF"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0,15,0,15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Column Flange"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <ListView Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              VerticalAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              ItemsSource="{Binding BeamToColumnFlangeCollection}"
+                              SelectedIndex="0">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40">
+
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsChecked}">
+                                                <interact:Interaction.Triggers>
+                                                    <interact:EventTrigger EventName="Checked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding ConnectingObjects}" />
+                                                    </interact:EventTrigger>
+                                                    <interact:EventTrigger EventName="Unchecked">
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" />
+                                                    </interact:EventTrigger>
+                                                </interact:Interaction.Triggers>
+                                            </CheckBox>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="200" Header="Objects">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="Auto"
+                                                       Height="Auto"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       Text="{Binding ConnectingObjects}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Components">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbComponents"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
+                                                      SelectedValue="{Binding Component}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                                      SelectedValue="{Binding Component}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Types">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbTypes"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}" />-->
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="150" Header="Angle">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <!--<ComboBox x:Name="cmbAngle"
+                                                      Width="135"
+                                                      ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
+                                                      SelectedValue="{Binding AngleType}" />-->
+
+                                            <ComboBox Width="135"
+                                                      DisplayMemberPath="Description"
+                                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                                      SelectedValue="{Binding AngleType}"
+                                                      SelectedValuePath="Value" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+
             </StackPanel>
         </ScrollViewer>
 

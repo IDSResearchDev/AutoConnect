@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoConnect", "AutoConnect\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Theme.Bootstrap", "..\Rnd.Theme.Bootstrap\Rnd.Theme.Bootstrap.csproj", "{D5F6DBAD-EB28-4098-A3D6-8D6C89B13FCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.TeklaStructure.Helper", "..\..\PackageTool\Rnd.Tekla.Helper 21.1\Rnd.TeklaStructure.Helper.csproj", "{2FB766B1-075B-4E1B-AF77-1B1AB30891D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnd.Common", "..\..\PackageTool\Rnd.Common\Rnd.Common.csproj", "{9012F455-2B9E-4D24-9D6C-928BC596E364}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{D5F6DBAD-EB28-4098-A3D6-8D6C89B13FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5F6DBAD-EB28-4098-A3D6-8D6C89B13FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5F6DBAD-EB28-4098-A3D6-8D6C89B13FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FB766B1-075B-4E1B-AF77-1B1AB30891D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FB766B1-075B-4E1B-AF77-1B1AB30891D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FB766B1-075B-4E1B-AF77-1B1AB30891D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FB766B1-075B-4E1B-AF77-1B1AB30891D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9012F455-2B9E-4D24-9D6C-928BC596E364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9012F455-2B9E-4D24-9D6C-928BC596E364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9012F455-2B9E-4D24-9D6C-928BC596E364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9012F455-2B9E-4D24-9D6C-928BC596E364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

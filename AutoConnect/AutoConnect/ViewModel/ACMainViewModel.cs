@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using AutoConnect.BaseClass;
+using AutoConnect.Converters;
 using AutoConnect.Model;
 using AutoConnect.View;
 using AutoConnect.View.UserControls;
@@ -49,27 +50,52 @@ namespace AutoConnect.ViewModel
         //    }
         //}
         #endregion
-        
+
+
+        public ACMainView _mainView;
 
         private string _title;
-
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
 
-        public ACMainView _mainView;
+
+        public ComponentType _cmbComponentType;
+        public ComponentType CmbComponentType
+        {
+            get { return _cmbComponentType; }
+            set { SetProperty(ref _cmbComponentType, value); }
+        }
+
+
+        private AngleTypes _selectedAngleType;
+
+        public AngleTypes SelectedAngleType
+        {
+            get { return _selectedAngleType; }
+            set { SetProperty(ref _selectedAngleType, value); }
+
+        }
 
 
         private bool _visibility;
-
         public bool Visibility
         {
             get { return _visibility; }
             set { SetProperty(ref _visibility, value); }
 
         }
+        
+        //private bool _isChecked;
+        //public bool IsChecked
+        //{
+        //    get { return _isChecked; }
+        //    set { SetProperty(ref _isChecked, value); }
+
+        //}
+
 
         private ObservableCollection<string> _componentTypes;
         public ObservableCollection<string> ComponentTypes
@@ -103,10 +129,6 @@ namespace AutoConnect.ViewModel
         public ACMainViewModel()
         {
             _title = "Autokek";
-
-            
-
-
         }
         
         #region Commands
@@ -118,9 +140,7 @@ namespace AutoConnect.ViewModel
                 return new DelegateCommand(() =>
                 {
                     //Do some sh!t
-                    BeamToBeamWebCollection = new ObservableCollection<ConnectionSetting>();
-                    BeamToColumnWebCollection = new ObservableCollection<ConnectionSetting>();
-                    BeamToColumnFlangeCollection = new ObservableCollection<ConnectionSetting>();
+                    
                     CreateModelObjects();
 
                 });
@@ -133,10 +153,38 @@ namespace AutoConnect.ViewModel
             {
                 return new DelegateCommand(() =>
                 {
-                    //Do some sh!t
+                    ApplyConnection(BeamToBeamWebCollection);
+                    ApplyConnection(BeamToColumnWebCollection);
+                    ApplyConnection(BeamToColumnFlangeCollection);
                 });
             }
         }
+
+        private void ApplyConnection(ObservableCollection<ConnectionSetting> collection)
+        {
+
+            if (collection.Count == 0 || collection == null) return; 
+            var model = new Tekla.Structures.Model.Model();
+
+            
+
+            foreach (var item in collection)
+            {
+                if (item.IsChecked)
+                {
+                    var component = (int)Enum.Parse(typeof(ComponentType), item.Component);
+                    var boltweld = (int)Enum.Parse(typeof(BoltWeldOrientation), item.BoltWeldOrientation);
+                    var angletype = (int)Enum.Parse(typeof(AngleTypes), item.AngleType);
+
+                    ConnectionChecker cnc = new ConnectionChecker();
+                    if (item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, (Beam)item.SecondaryObject, component, "LOL", boltweld, angletype);
+                    if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, component, "LOL", boltweld, angletype);
+                }
+            }
+            
+            model.CommitChanges();
+        }
+        
 
         public ICommand Exit
         {
@@ -160,15 +208,20 @@ namespace AutoConnect.ViewModel
             }
         }
 
+        
         public ICommand CheckBox_CheckChanged
         {
             get
             {
                 return new DelegateCommand((Text) =>
                 {
+                    //var model = new Tekla.Structures.Model.Model();
+                    Tekla.Structures.Model.UI.ModelObjectSelector Selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
+
                     var source = Text as string;
                     if(source != null)
                     {
+                        
                         var ids = source.Replace(" >>> ", "|").Split('|');
                         ArrayList arr = new ArrayList();
                         foreach (var a in ids)
@@ -177,23 +230,35 @@ namespace AutoConnect.ViewModel
                             {
                                 Identifier = { ID = Convert.ToInt32(a) }
                             };
-                            arr.Add(b);
+
+                           
+                                arr.Add(b);
+                             
+                            
                         }
-
-                        var model = new Tekla.Structures.Model.Model();
-
-                        Tekla.Structures.Model.UI.ModelObjectSelector Selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
+                        
                         Selector.Select(arr);
+                        
                     }
-                    
+                });
+            }
+        }
 
+        public ICommand CheckBox_UnChecked
+        {
+            get
+            {
+                return new DelegateCommand((sender) =>
+                {
+                    
+                    
                 });
             }
         }
 
 
         #endregion
-        
+
 
         public void CreateModelObjects()
         {
@@ -204,15 +269,18 @@ namespace AutoConnect.ViewModel
             System.Windows.Window win = this.GetCurrentWindow();
             _mainView = (ACMainView)win;
 
-            _mainView.FrameOrientation.SubCtrlBeamToBeamWeb.vm.BeamToBeamWebCollection = con.BeamToBeamWebColl;
-            _mainView.FrameOrientation.SubCtrlBeamToColumWeb.vm.BeamToColumnWebCollection = con.BeamToColumnWebColl;
-            _mainView.FrameOrientation.SubCtrlBeamToColumFlange.vm.BeamToColumnFlangeCollection = con.BeamToColumnFlangeColl;
-            
+            BeamToBeamWebCollection = con.BeamToBeamWebColl;
+            BeamToColumnWebCollection = con.BeamToColumnWebColl;
+            BeamToColumnFlangeCollection = con.BeamToColumnFlangeColl;
+
+
         }
+
+
 
         private bool CheckVisibility(ObservableCollection<ConnectionSetting> collection)
         {
-            return collection.Count > 0 ? true : false;
+            return collection.Count > 0;
         }
         
 
