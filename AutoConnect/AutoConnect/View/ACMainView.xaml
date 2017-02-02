@@ -157,7 +157,7 @@
                                                         <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding Path=ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                     <interact:EventTrigger EventName="Unchecked">
-                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_UnChecked, ElementName=vm}" CommandParameter="{Binding ElementName=checkbox}" />
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_UnChecked, ElementName=vm}" CommandParameter="{Binding Path=ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                 </interact:Interaction.Triggers>
                                             </CheckBox>
@@ -254,7 +254,7 @@
                                                         <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                     <interact:EventTrigger EventName="Unchecked">
-                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" />
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_UnChecked, ElementName=vm}" CommandParameter="{Binding Path=ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                 </interact:Interaction.Triggers>
                                             </CheckBox>
@@ -358,7 +358,7 @@
                                                         <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" CommandParameter="{Binding ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                     <interact:EventTrigger EventName="Unchecked">
-                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_CheckChanged, ElementName=vm}" />
+                                                        <interact:InvokeCommandAction Command="{Binding CheckBox_UnChecked, ElementName=vm}" CommandParameter="{Binding Path=ConnectingObjects}" />
                                                     </interact:EventTrigger>
                                                 </interact:Interaction.Triggers>
                                             </CheckBox>

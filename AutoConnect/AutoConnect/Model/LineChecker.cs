@@ -105,32 +105,48 @@ namespace AutoConnect.Model
 
         private void SetLineType()
         {
-            if (X1 == X2)
+            if (X1 == X2 && Y1 == Y2)
             {
-                if (Y1 == Y2)
-                {
-                    Type = LineType.Column;
-                }
-                else
-                {
-                    Type = LineType.Vertical;
-                }
+                Type = LineType.Column;
             }
-            else if (Y1 == Y2)
+            else if (X1 == X2)
             {
-                if (X1 == X2)
-                {
-                    Type = LineType.Column;
-                }
-                else
-                {
-                    Type = LineType.Horizontal;
-                }
+                Type = LineType.Vertical;
+            }
+            else if(Y1 == Y2)
+            {
+                Type = LineType.Horizontal;
             }
             else
             {
                 Type = LineType.Slant;
             }
+            //if (X1 == X2)
+            //{
+            //    if (Y1 == Y2)
+            //    {
+            //        Type = LineType.Column;
+            //    }
+            //    else
+            //    {
+            //        Type = LineType.Vertical;
+            //    }
+            //}
+            //else if (Y1 == Y2)
+            //{
+            //    if (X1 == X2)
+            //    {
+            //        Type = LineType.Column;
+            //    }
+            //    else
+            //    {
+            //        Type = LineType.Horizontal;
+            //    }
+            //}
+            //else
+            //{
+            //    Type = LineType.Slant;
+            //}
         }
 
         private double? GetYIntercept()

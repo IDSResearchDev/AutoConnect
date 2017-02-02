@@ -10,6 +10,8 @@ using AutoConnect.View;
 using AutoConnect.View.UserControls;
 using Tekla.Structures;
 using Tekla.Structures.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AutoConnect.ViewModel
 {
@@ -52,7 +54,8 @@ namespace AutoConnect.ViewModel
         #endregion
 
 
-        public ACMainView _mainView;
+        //public ACMainView _mainView;
+        ArrayList Selection = new ArrayList();
 
         private string _title;
         public string Title
@@ -223,7 +226,8 @@ namespace AutoConnect.ViewModel
                     {
                         
                         var ids = source.Replace(" >>> ", "|").Split('|');
-                        ArrayList arr = new ArrayList();
+                        //ArrayList arr = new ArrayList();
+                        
                         foreach (var a in ids)
                         {
                             Beam b = new Beam
@@ -231,13 +235,15 @@ namespace AutoConnect.ViewModel
                                 Identifier = { ID = Convert.ToInt32(a) }
                             };
 
+                            Selection.Add(b);
+
                            
-                                arr.Add(b);
+                                //arr.Add(b);
                              
                             
                         }
                         
-                        Selector.Select(arr);
+                        Selector.Select(Selection);
                         
                     }
                 });
@@ -248,10 +254,30 @@ namespace AutoConnect.ViewModel
         {
             get
             {
-                return new DelegateCommand((sender) =>
+                return new DelegateCommand((Text) =>
                 {
-                    
-                    
+                    Tekla.Structures.Model.UI.ModelObjectSelector Selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
+
+                    var source = Text as string;
+                    if (source != null)
+                    {
+                        var ids = source.Replace(" >>> ", "|").Split('|');;
+                        List<Beam> results = Selection.Cast<Beam>().ToList();
+
+                        foreach (var a in ids)
+                        {
+                            Beam b = new Beam
+                            {
+                                Identifier = { ID = Convert.ToInt32(a) }
+                            };
+
+                            var rem = results.Where(x => x.Identifier.ID == b.Identifier.ID).Select(y => y).ToList();
+                            results.Remove(rem[0]);
+                        }
+
+                        Selection = new ArrayList(results);
+                        Selector.Select(Selection);
+                    }
                 });
             }
         }
@@ -266,8 +292,8 @@ namespace AutoConnect.ViewModel
             ConnectionChecker con = new ConnectionChecker();
             con.Process();
 
-            System.Windows.Window win = this.GetCurrentWindow();
-            _mainView = (ACMainView)win;
+            //System.Windows.Window win = this.GetCurrentWindow();
+            //_mainView = (ACMainView)win;
 
             BeamToBeamWebCollection = con.BeamToBeamWebColl;
             BeamToColumnWebCollection = con.BeamToColumnWebColl;
