@@ -63,26 +63,7 @@ namespace AutoConnect.ViewModel
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
-
-
-        public ComponentType _cmbComponentType;
-        public ComponentType CmbComponentType
-        {
-            get { return _cmbComponentType; }
-            set { SetProperty(ref _cmbComponentType, value); }
-        }
-
-
-        private AngleTypes _selectedAngleType;
-
-        public AngleTypes SelectedAngleType
-        {
-            get { return _selectedAngleType; }
-            set { SetProperty(ref _selectedAngleType, value); }
-
-        }
-
-
+        
         private bool _visibility;
         public bool Visibility
         {
@@ -98,7 +79,6 @@ namespace AutoConnect.ViewModel
         //    set { SetProperty(ref _isChecked, value); }
 
         //}
-
 
         private ObservableCollection<string> _componentTypes;
         public ObservableCollection<string> ComponentTypes
@@ -143,7 +123,7 @@ namespace AutoConnect.ViewModel
                 return new DelegateCommand(() =>
                 {
                     //Do some sh!t
-                    
+                    Selection = new ArrayList();
                     CreateModelObjects();
 
                 });
@@ -168,8 +148,9 @@ namespace AutoConnect.ViewModel
 
             if (collection.Count == 0 || collection == null) return; 
             var model = new Tekla.Structures.Model.Model();
+            var modelname = model.GetInfo().ModelName;
+            var jobcode = GetJobCodeOnProjectName(modelname);
 
-            
 
             foreach (var item in collection)
             {
@@ -180,14 +161,26 @@ namespace AutoConnect.ViewModel
                     var angletype = (int)Enum.Parse(typeof(AngleTypes), item.AngleType);
 
                     ConnectionChecker cnc = new ConnectionChecker();
-                    if (item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, (Beam)item.SecondaryObject, component, "LOL", boltweld, angletype);
-                    if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, component, "LOL", boltweld, angletype);
+                    if (item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, (Beam)item.SecondaryObject, component, jobcode, boltweld, angletype);
+                    if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, component, jobcode, boltweld, angletype);
                 }
             }
             
             model.CommitChanges();
         }
-        
+
+        private string GetJobCodeOnProjectName(string modelname)
+        {
+            try
+            {
+                var split = modelname.Split('_');
+                return split[1].ToString();
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException("Model name is not on the right format. (Job #_Jobcode_Fabricator_TeklaVersionUsImp)");
+            }
+        }
 
         public ICommand Exit
         {
@@ -235,12 +228,7 @@ namespace AutoConnect.ViewModel
                                 Identifier = { ID = Convert.ToInt32(a) }
                             };
 
-                            Selection.Add(b);
-
-                           
-                                //arr.Add(b);
-                             
-                            
+                            Selection.Add(b);                                //arr.Add(b);
                         }
                         
                         Selector.Select(Selection);
