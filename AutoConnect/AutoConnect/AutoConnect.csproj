@@ -56,6 +56,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft SDKs\Expression\Blend\.NETFramework\v4.5\Libraries\System.Windows.Interactivity.dll</HintPath>
@@ -158,6 +159,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -181,18 +183,30 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PackageTool\Rnd.Common\Rnd.Common.csproj">
-      <Project>{9012f455-2b9e-4d24-9d6c-928bc596e364}</Project>
-      <Name>Rnd.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\PackageTool\Rnd.Tekla.Helper 21.1\Rnd.TeklaStructure.Helper.csproj">
-      <Project>{2fb766b1-075b-4e1b-af77-1b1ab30891d6}</Project>
-      <Name>Rnd.TeklaStructure.Helper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Rnd.Theme.Bootstrap\Rnd.Theme.Bootstrap.csproj">
       <Project>{d5f6dbad-eb28-4098-a3d6-8d6c89b13fcb}</Project>
       <Name>Rnd.Theme.Bootstrap</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BeamToBeam Multi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BeamToColumn Multi.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BeamToColumn Single.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BeamToBeam Single.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

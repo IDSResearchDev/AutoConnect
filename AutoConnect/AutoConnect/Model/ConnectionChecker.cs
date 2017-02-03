@@ -523,6 +523,12 @@ namespace AutoConnect.Model
                 C.SetSecondaryObject(secondary);
                 C.PositionType = PositionTypeEnum.COLLISION_PLANE;
 
+                if (component == 141)
+                {
+                    C.SetAttribute("btab5",angletype);//angle
+                    C.SetAttribute("atab1",boltweldstype);//bolts/welds
+                }
+
                 //C.SetAttribute("btab5",angletype);//angle
                 //C.SetAttribute("atab1",boltweldstype);//bolts/welds
 
@@ -549,7 +555,7 @@ namespace AutoConnect.Model
 
         }
 
-        public bool CreateConnection(Beam primary, ArrayList secondaries, int component, string code, int boltwelds, int angletype)
+        public bool CreateConnection(Beam primary, ArrayList secondaries, int component, string code, int boltweldstype, int angletype)
         {
             var beamsize = GetSecondaryBeamProfile(((Beam)secondaries[0]));
             var attribute = string.Concat(code, "_", beamsize);
@@ -565,6 +571,13 @@ namespace AutoConnect.Model
                 C.SetSecondaryObjects(secondaries);
                 
                 C.PositionType = PositionTypeEnum.COLLISION_PLANE;
+
+                if (component == 141)
+                {
+                    C.SetAttribute("btab5", angletype);//angle
+                    C.SetAttribute("atab1", boltweldstype);//bolts/welds
+                }
+
 
                 //C.SetAttribute("btab5",angletype);//angle
                 //C.SetAttribute("atab1",boltweldstype);//bolts/welds

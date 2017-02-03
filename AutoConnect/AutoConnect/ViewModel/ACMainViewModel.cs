@@ -130,12 +130,126 @@ namespace AutoConnect.ViewModel
 
         }
 
-        private ObservableCollection<string> _componentTypes;
-        public ObservableCollection<string> ComponentTypes
+
+        //comboboxes
+        #region Components
+        private string _b2bWSingleComponentTypes;
+        public string B2BWSingleComponentTypes
         {
-            get { return _componentTypes; }
-            set { SetProperty(ref _componentTypes, value); }
+            get { return _b2bWSingleComponentTypes; }
+            set { SetProperty(ref _b2bWSingleComponentTypes, value); }
         }
+
+        private string _b2bWMultiComponentTypes;
+        public string B2BWMultiComponentTypes
+        {
+            get { return _b2bWMultiComponentTypes; }
+            set { SetProperty(ref _b2bWMultiComponentTypes, value); }
+        }
+
+        private string _b2cWSingleComponentTypes;
+        public string B2CWSingleComponentTypes
+        {
+            get { return _b2cWSingleComponentTypes; }
+            set { SetProperty(ref _b2cWSingleComponentTypes, value); }
+        }
+
+        private string _b2cWMultiComponentTypes;
+        public string B2CWMultiComponentTypes
+        {
+            get { return _b2cWMultiComponentTypes; }
+            set { SetProperty(ref _b2cWMultiComponentTypes, value); }
+        }
+
+        private string _b2cfComponentTypes;
+        public string B2CFComponentTypes
+        {
+            get { return _b2cfComponentTypes; }
+            set { SetProperty(ref _b2cfComponentTypes, value); }
+        }
+        #endregion
+
+        #region Bolt/Welds
+        private string _b2bWSingleBoltWeldTypes;
+        public string B2BWSingleBoltWeldTypes
+        {
+            get { return _b2bWSingleBoltWeldTypes; }
+            set { SetProperty(ref _b2bWSingleBoltWeldTypes, value); }
+        }
+
+        private string _b2bWMultiBoltWeldTypes;
+        public string B2BWMultiBoltWeldTypes
+        {
+            get { return _b2bWMultiBoltWeldTypes; }
+            set { SetProperty(ref _b2bWMultiBoltWeldTypes, value); }
+        }
+
+        private string _b2cWSingleBoltWeldTypes;
+        public string B2CWSingleBoltWeldTypes
+        {
+            get { return _b2cWSingleBoltWeldTypes; }
+            set { SetProperty(ref _b2cWSingleBoltWeldTypes, value); }
+        }
+
+        private string _b2cWMultiBoltWeldTypes;
+        public string B2CWMultiBoltWeldTypes
+        {
+            get { return _b2cWMultiBoltWeldTypes; }
+            set { SetProperty(ref _b2cWMultiBoltWeldTypes, value); }
+        }
+
+        private string _b2cfBoltWeldTypes;
+        public string B2CFBoltWeldTypes
+        {
+            get { return _b2cfBoltWeldTypes; }
+            set { SetProperty(ref _b2cfBoltWeldTypes, value); }
+        }
+        #endregion
+
+        #region AngleTypes
+        private string _b2bWSingleAngleTypes;
+        public string B2BWSingleAngleTypes
+        {
+            get { return _b2bWSingleAngleTypes; }
+            set { SetProperty(ref _b2bWSingleAngleTypes, value); }
+        }
+
+        private string _b2bWMultiAngleTypes;
+        public string B2BWMultiAngleTypes
+        {
+            get { return _b2bWMultiAngleTypes; }
+            set { SetProperty(ref _b2bWMultiAngleTypes, value); }
+        }
+
+        private string _b2cWSingleAngleTypes;
+        public string B2CWSingleAngleTypes
+        {
+            get { return _b2cWSingleAngleTypes; }
+            set { SetProperty(ref _b2cWSingleAngleTypes, value); }
+        }
+
+        private string _b2cWMultiAngleTypes;
+        public string B2CWMultiAngleTypes
+        {
+            get { return _b2cWMultiAngleTypes; }
+            set { SetProperty(ref _b2cWMultiAngleTypes, value); }
+        }
+
+        private string _b2cfAngleTypes;
+        public string B2CFAngleTypes
+        {
+            get { return _b2cfAngleTypes; }
+            set { SetProperty(ref _b2cfAngleTypes, value); }
+        }
+    
+        #endregion
+
+        //private string _componentTypes;
+        //public string ComponentTypes
+        //{
+        //    get { return _componentTypes; }
+        //    set { SetProperty(ref _componentTypes, value); }
+        //}
 
         private ObservableCollection<ConnectionSetting> _beamToBeamWebCollection;
         public ObservableCollection<ConnectionSetting> BeamToBeamWebCollection
@@ -203,16 +317,21 @@ namespace AutoConnect.ViewModel
                 return new DelegateCommand(() =>
                 {
                     FilterConnection();
-                    if (Included_BTBWD && BeamToBeamWebDoubleCollection.Count > 0) { ApplyConnection(BeamToBeamWebDoubleCollection); }
-                    if (Included_BTBWS && BeamToBeamWebCollection.Count > 0) { ApplyConnection(BeamToBeamWebCollection); }
-                    if (Included_BTCWD && BeamToColumnWebDoubleCollection.Count > 0) { ApplyConnection(BeamToColumnWebDoubleCollection); }
-                    if (Included_BTCWS && BeamToColumnWebCollection.Count > 0) { ApplyConnection(BeamToColumnWebCollection); }
-                    if (Included_BTCFS && BeamToColumnFlangeCollection.Count > 0) { ApplyConnection(BeamToColumnFlangeCollection); }
+                    if (Included_BTBWD && BeamToBeamWebDoubleCollection.Count > 0) { ApplyConnection(BeamToBeamWebDoubleCollection, B2BWMultiComponentTypes, B2BWMultiBoltWeldTypes, B2BWMultiAngleTypes); }
+
+                    if (Included_BTBWS && BeamToBeamWebCollection.Count > 0) { ApplyConnection(BeamToBeamWebCollection, B2BWSingleComponentTypes, B2BWSingleBoltWeldTypes, B2BWSingleAngleTypes); }
+
+                    if (Included_BTCWD && BeamToColumnWebDoubleCollection.Count > 0) { ApplyConnection(BeamToColumnWebDoubleCollection,B2CWMultiComponentTypes, B2CWMultiBoltWeldTypes, B2CWMultiAngleTypes); }
+
+                    if (Included_BTCWS && BeamToColumnWebCollection.Count > 0) { ApplyConnection(BeamToColumnWebCollection, B2CWSingleComponentTypes, B2CWSingleBoltWeldTypes, B2CWSingleAngleTypes); }
+
+                    if (Included_BTCFS && BeamToColumnFlangeCollection.Count > 0) { ApplyConnection(BeamToColumnFlangeCollection, B2CFComponentTypes, B2CFBoltWeldTypes, B2CFAngleTypes); }
+
                 });
             }
         }
 
-        private void ApplyConnection(ObservableCollection<ConnectionSetting> collection)
+        private void ApplyConnection(ObservableCollection<ConnectionSetting> collection, string component, string boltweldtype, string angletype)
         {
 
             if (collection.Count == 0 || collection == null) return;
@@ -225,13 +344,13 @@ namespace AutoConnect.ViewModel
             {
                 if (item.IsChecked)
                 {
-                    var component = (int)Enum.Parse(typeof(ComponentType), item.Component);
-                    var boltweld = (int)Enum.Parse(typeof(BoltWeldOrientation), item.BoltWeldOrientation);
-                    var angletype = (int)Enum.Parse(typeof(AngleTypes), item.AngleType);
+                    var EnumComponent = (int)Enum.Parse(typeof(ComponentType), component);
+                    var EnumBoltweldtype = (int)Enum.Parse(typeof(BoltWeldOrientation), boltweldtype);
+                    var EnumAngletype = (int)Enum.Parse(typeof(AngleTypes), angletype);
 
                     ConnectionChecker cnc = new ConnectionChecker();
-                    if (item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, (Beam)item.SecondaryObject, component, jobcode, boltweld, angletype);
-                    if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, component, jobcode, boltweld, angletype);
+                    if (item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, (Beam)item.SecondaryObject, EnumComponent, jobcode, EnumBoltweldtype, EnumAngletype);
+                    if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, EnumComponent, jobcode, EnumBoltweldtype, EnumAngletype);
                 }
             }
 

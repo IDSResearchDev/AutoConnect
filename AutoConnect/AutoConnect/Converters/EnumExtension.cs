@@ -35,21 +35,21 @@ namespace AutoConnect.Converters
     public enum BoltWeldOrientation
     {
         [Description("Bolted-Bolted")]
-        BoltedBolted = 1,
+        BoltedBolted = 2,
         [Description("Bolted-Welded")]
-        BoltedWelded = 2,
+        BoltedWelded = 4,
         [Description("Welded-Bolted")]
         WeldedBolted = 3,
         [Description("Welded-Welded")]
-        WeldedWelded = 4
+        WeldedWelded = 5
     }
 
     public enum AngleTypes
     {
         [Description("Single")]
-        Single = 1,
+        Single = 2,
         [Description("Double")]
-        Double = 5
+        Double = 3
     }
 
     public class EnumExtension : MarkupExtension
