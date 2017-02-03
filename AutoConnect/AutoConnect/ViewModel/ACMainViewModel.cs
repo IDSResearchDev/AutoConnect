@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace AutoConnect.ViewModel
 {
-    
+
     public class Data
     {
         public int PrimaryId { get; set; }
@@ -63,7 +63,7 @@ namespace AutoConnect.ViewModel
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
-        
+
         private bool _visibility;
         public bool Visibility
         {
@@ -71,14 +71,24 @@ namespace AutoConnect.ViewModel
             set { SetProperty(ref _visibility, value); }
 
         }
-        
-        //private bool _isChecked;
-        //public bool IsChecked
-        //{
-        //    get { return _isChecked; }
-        //    set { SetProperty(ref _isChecked, value); }
 
-        //}
+
+        private int _objectSelected;
+        public int ObjectsSelected
+        {
+            get { return _objectSelected; }
+            set { SetProperty(ref _objectSelected, value); }
+
+        }
+
+
+        private bool _isChecked = true;
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { SetProperty(ref _isChecked, value); }
+
+        }
 
         private ObservableCollection<string> _componentTypes;
         public ObservableCollection<string> ComponentTypes
@@ -94,6 +104,13 @@ namespace AutoConnect.ViewModel
             set { SetProperty(ref _beamToBeamWebCollection, value); }
         }
 
+        private ObservableCollection<ConnectionSetting> _beamToBeamWebDoubleCollection;
+        public ObservableCollection<ConnectionSetting> BeamToBeamWebDoubleCollection
+        {
+            get { return _beamToBeamWebDoubleCollection; }
+            set { SetProperty(ref _beamToBeamWebDoubleCollection, value); }
+        }
+
         private ObservableCollection<ConnectionSetting> _beamToColumnWebCollection;
         public ObservableCollection<ConnectionSetting> BeamToColumnWebCollection
         {
@@ -101,7 +118,16 @@ namespace AutoConnect.ViewModel
             set { SetProperty(ref _beamToColumnWebCollection, value); }
         }
 
+        private ObservableCollection<ConnectionSetting> _beamToColumnWebDoubleCollection;
+        public ObservableCollection<ConnectionSetting> BeamToColumnWebDoubleCollection
+        {
+            get { return _beamToColumnWebDoubleCollection; }
+            set { SetProperty(ref _beamToColumnWebDoubleCollection, value); }
+        }
+
         private ObservableCollection<ConnectionSetting> _beamToColumnFlangeCollection;
+        //private ACMainView _mainView;
+
         public ObservableCollection<ConnectionSetting> BeamToColumnFlangeCollection
         {
             get { return _beamToColumnFlangeCollection; }
@@ -111,9 +137,9 @@ namespace AutoConnect.ViewModel
         //Constructor
         public ACMainViewModel()
         {
-            _title = "Autokek";
+            _title = "Auto Connection";
         }
-        
+
         #region Commands
 
         public ICommand Analyze
@@ -146,7 +172,7 @@ namespace AutoConnect.ViewModel
         private void ApplyConnection(ObservableCollection<ConnectionSetting> collection)
         {
 
-            if (collection.Count == 0 || collection == null) return; 
+            if (collection.Count == 0 || collection == null) return;
             var model = new Tekla.Structures.Model.Model();
             var modelname = model.GetInfo().ModelName;
             var jobcode = GetJobCodeOnProjectName(modelname);
@@ -165,7 +191,7 @@ namespace AutoConnect.ViewModel
                     if (!item.IsSingleConnection) cnc.CreateConnection((Beam)item.PrimaryObject, item.SecondaryObjects, component, jobcode, boltweld, angletype);
                 }
             }
-            
+
             model.CommitChanges();
         }
 
@@ -204,7 +230,7 @@ namespace AutoConnect.ViewModel
             }
         }
 
-        
+
         public ICommand CheckBox_CheckChanged
         {
             get
@@ -215,12 +241,12 @@ namespace AutoConnect.ViewModel
                     Tekla.Structures.Model.UI.ModelObjectSelector Selector = new Tekla.Structures.Model.UI.ModelObjectSelector();
 
                     var source = Text as string;
-                    if(source != null)
+                    if (source != null)
                     {
-                        
+
                         var ids = source.Replace(" >>> ", "|").Split('|');
                         //ArrayList arr = new ArrayList();
-                        
+
                         foreach (var a in ids)
                         {
                             Beam b = new Beam
@@ -230,9 +256,9 @@ namespace AutoConnect.ViewModel
 
                             Selection.Add(b);                                //arr.Add(b);
                         }
-                        
+
                         Selector.Select(Selection);
-                        
+
                     }
                 });
             }
@@ -249,7 +275,7 @@ namespace AutoConnect.ViewModel
                     var source = Text as string;
                     if (source != null)
                     {
-                        var ids = source.Replace(" >>> ", "|").Split('|');;
+                        var ids = source.Replace(" >>> ", "|").Split('|'); ;
                         List<Beam> results = Selection.Cast<Beam>().ToList();
 
                         foreach (var a in ids)
@@ -280,24 +306,106 @@ namespace AutoConnect.ViewModel
             ConnectionChecker con = new ConnectionChecker();
             con.Process();
 
-            //System.Windows.Window win = this.GetCurrentWindow();
-            //_mainView = (ACMainView)win;
-
             BeamToBeamWebCollection = con.BeamToBeamWebColl;
             BeamToColumnWebCollection = con.BeamToColumnWebColl;
             BeamToColumnFlangeCollection = con.BeamToColumnFlangeColl;
+            //two-way connections
+            BeamToBeamWebDoubleCollection = con.BeamToBeamWebDoubleColl;
+            BeamToColumnWebDoubleCollection = con.BeamToColumnWebDoubleColl;
 
+            //counts
+            B2BW_SingleCollectionCount = BeamToBeamWebCollection.Count;
+            B2BW_MultiCollectionCount = BeamToBeamWebDoubleCollection.Count;
+
+            B2CW_SingleCollectionCount = BeamToColumnWebCollection.Count;
+            B2CW_MultiCollectionCount = BeamToColumnWebDoubleCollection.Count;
+
+            B2CF_CollectionCount = BeamToColumnFlangeCollection.Count;
+
+
+            //System.Windows.Window win = this.GetCurrentWindow();
+            //_mainView = (ACMainView)win;
+
+            //class = con.BeamToColumnWebColl;
+            //for (int i = 0; i < 1; i++)
+            //{
+            //    FrameOrientation frameorientation = new FrameOrientation();
+            //    frameorientation.vm.BeamToBeamWebCollection = BeamToBeamWebCollection;
+            //    _mainView.StackPopulate.Children.Add(frameorientation);
+            //}
 
         }
 
 
-
-        private bool CheckVisibility(ObservableCollection<ConnectionSetting> collection)
+        private int _b2bw_SingleCollectionCount;
+        public int B2BW_SingleCollectionCount
         {
-            return collection.Count > 0;
+            get { return _b2bw_SingleCollectionCount; }
+            set { SetProperty(ref _b2bw_SingleCollectionCount, value); B2BWSingle_IsCollapse = this.B2BW_SingleCollectionCount > 0 ? "Visibile" : "Collapsed"; }
         }
-        
 
+        private int _b2bw_MultiCollectionCount;
+        public int B2BW_MultiCollectionCount
+        {
+            get { return _b2bw_MultiCollectionCount; }
+            set { SetProperty(ref _b2bw_MultiCollectionCount, value); B2BWMulti_IsCollapse = this.B2BW_MultiCollectionCount > 0 ? "Visibile" : "Collapsed"; }
+        }
 
+        private int _b2cw_SingleCollectionCount;
+        public int B2CW_SingleCollectionCount
+        {
+            get { return _b2cw_SingleCollectionCount; }
+            set { SetProperty(ref _b2cw_SingleCollectionCount, value); B2CWSingle_IsCollapse = this.B2CW_SingleCollectionCount > 0 ? "Visibile" : "Collapsed"; }
+        }
+
+        private int _b2cw_MultiCollectionCount;
+        public int B2CW_MultiCollectionCount
+        {
+            get { return _b2cw_MultiCollectionCount; }
+            set { SetProperty(ref _b2cw_MultiCollectionCount, value); B2CWMulti_IsCollapse = this.B2CW_MultiCollectionCount > 0 ? "Visibile" : "Collapsed"; }
+        }
+
+        private int _b2cf_CollectionCount;
+        public int B2CF_CollectionCount
+        {
+            get { return _b2cf_CollectionCount; }
+            set { SetProperty(ref _b2cf_CollectionCount, value); B2CF_IsCollapsed = this.B2CF_CollectionCount > 0 ? "Visibile" : "Collapsed"; }
+        }
+
+        //visibility
+        private string _b2bwSingle_isCollapse = "Collapsed";
+        public string B2BWSingle_IsCollapse
+        {
+            get { return _b2bwSingle_isCollapse; }
+            set { SetProperty(ref _b2bwSingle_isCollapse, value); }
+        }
+
+        private string _b2bwMulti_isCollapse = "Collapsed";
+        public string B2BWMulti_IsCollapse
+        {
+            get { return _b2bwMulti_isCollapse; }
+            set { SetProperty(ref _b2bwMulti_isCollapse, value); }
+        }
+
+        private string _b2cwSingle_isCollapse = "Collapsed";
+        public string B2CWSingle_IsCollapse
+        {
+            get { return _b2cwSingle_isCollapse; }
+            set { SetProperty(ref _b2cwSingle_isCollapse, value); }
+        }
+
+        private string _b2cwMulti_isCollapse = "Collapsed";
+        public string B2CWMulti_IsCollapse
+        {
+            get { return _b2cwMulti_isCollapse; }
+            set { SetProperty(ref _b2cwMulti_isCollapse, value); }
+        }
+
+        private string _b2cf_isCollapse = "Collapsed";
+        public string B2CF_IsCollapsed
+        { 
+            get { return _b2cf_isCollapse; }
+            set { SetProperty(ref _b2cf_isCollapse, value); }
+        }
     }
 }

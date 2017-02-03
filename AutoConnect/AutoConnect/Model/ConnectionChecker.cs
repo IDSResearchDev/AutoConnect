@@ -26,6 +26,19 @@ namespace AutoConnect.Model
                 _beamToBeamWebColl = value;
             }
         }
+
+        private ObservableCollection<ConnectionSetting> _beamToBeamWebDoubleColl;
+        public ObservableCollection<ConnectionSetting> BeamToBeamWebDoubleColl
+        {
+            get
+            {
+                return _beamToBeamWebDoubleColl;
+            }
+            set
+            {
+                _beamToBeamWebDoubleColl = value;
+            }
+        }
         private ObservableCollection<ConnectionSetting> _beamToColumnWebColl;
         public ObservableCollection<ConnectionSetting> BeamToColumnWebColl
         {
@@ -36,6 +49,19 @@ namespace AutoConnect.Model
             set
             {
                 _beamToColumnWebColl = value;
+            }
+        }
+
+        private ObservableCollection<ConnectionSetting> _beamToColumnWebDoubleColl;
+        public ObservableCollection<ConnectionSetting> BeamToColumnWebDoubleColl
+        {
+            get
+            {
+                return _beamToColumnWebDoubleColl;
+            }
+            set
+            {
+                _beamToColumnWebDoubleColl = value;
             }
         }
 
@@ -52,11 +78,16 @@ namespace AutoConnect.Model
             }
         }
 
+
+
         public ConnectionChecker()
         {
             BeamToBeamWebColl = new ObservableCollection<ConnectionSetting>();
             BeamToColumnFlangeColl = new ObservableCollection<ConnectionSetting>();
             BeamToColumnWebColl = new ObservableCollection<ConnectionSetting>();
+            BeamToBeamWebDoubleColl = new ObservableCollection<ConnectionSetting>();
+            BeamToColumnWebDoubleColl = new ObservableCollection<ConnectionSetting>();
+            
         }
 
         public void Process()
@@ -439,8 +470,11 @@ namespace AutoConnect.Model
 
             if (key.PrimaryType == "BEAM")
             {
-                multiCon.ConnectionType = "B2BW";
-                BeamToBeamWebColl.Add(multiCon);
+                //multiCon.ConnectionType = "B2BW";
+                //BeamToBeamWebColl.Add(multiCon);
+
+                multiCon.ConnectionType = "B2BWD";
+                BeamToBeamWebDoubleColl.Add(multiCon);
 
                 pair1.ConnectionType = "B2BW";
                 BeamToBeamWebColl.Add(pair1);
@@ -450,8 +484,11 @@ namespace AutoConnect.Model
             }
             else
             {
-                multiCon.ConnectionType = "B2CW";
-                BeamToColumnWebColl.Add(multiCon);
+                //multiCon.ConnectionType = "B2CW";
+                //BeamToColumnWebColl.Add(multiCon);
+
+                multiCon.ConnectionType = "B2CWD";
+                BeamToColumnWebDoubleColl.Add(multiCon);
 
                 pair1.ConnectionType = "B2CW";
                 BeamToColumnWebColl.Add(pair1);

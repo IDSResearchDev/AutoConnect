@@ -13,8 +13,8 @@
         xmlns:vm="clr-namespace:AutoConnect.ViewModel"
         x:Name="window"
         Title="{Binding Title}"
-        Width="757.847"
-        Height="600"
+        Width="868.847"
+        Height="732"
         ResizeMode="NoResize"
         mc:Ignorable="d">
     <!--  local:ViewModelLocator.AutoViewModel="True"  -->
@@ -121,11 +121,697 @@
                         Orientation="Vertical">
                 <!--<usrctrl:FrameOrientation x:Name="FrameOrientation" Width="Auto" />-->
 
-                <Grid x:Name="GridB2BW"
+                <Grid x:Name="B2BW"
                       Width="Auto"
                       Height="Auto"
-                      Margin="0,15,0,15">
+                      Margin="15"
+                      Visibility="{Binding Path=B2BWSingle_IsCollapse}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Beam Web Single-Connection"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto">
+                        <Grid Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="150*" />
+                                <ColumnDefinition Width="80*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Objects" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="#" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Component" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="4"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Bolt/Welds" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="5"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Angle" />
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="10,6,5,5"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsChecked}">
+                                <interact:Interaction.Triggers>
+                                    <interact:EventTrigger EventName="Checked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                    </interact:EventTrigger>
+                                    <interact:EventTrigger EventName="Unchecked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                    </interact:EventTrigger>
+                                </interact:Interaction.Triggers>
+                            </CheckBox>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="Angle"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding B2BW_SingleCollectionCount}"
+                                       TextAlignment="Center" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                      SelectedValue="{Binding Component}"
+                                      SelectedValuePath="Value" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="4"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                      SelectedValuePath="Value" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="5"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                      SelectedValue="{Binding AngleType}"
+                                      SelectedValuePath="Value" />
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="B2BW_Multi"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="15"
+                      Visibility="{Binding Path=B2BWMulti_IsCollapse}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Beam Web Multi-Connection"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto">
+                        <Grid Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="150*" />
+                                <ColumnDefinition Width="80*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Objects" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="#" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Component" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="4"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Bolt/Welds" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="5"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Angle" />
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="10,6,5,5"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsChecked}">
+                                <interact:Interaction.Triggers>
+                                    <interact:EventTrigger EventName="Checked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                    </interact:EventTrigger>
+                                    <interact:EventTrigger EventName="Unchecked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                    </interact:EventTrigger>
+                                </interact:Interaction.Triggers>
+                            </CheckBox>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="Angle"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding B2BW_MultiCollectionCount}"
+                                       TextAlignment="Center" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                      SelectedValue="{Binding Component}"
+                                      SelectedValuePath="Value" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="4"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                      SelectedValuePath="Value" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="5"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                      SelectedValue="{Binding AngleType}"
+                                      SelectedValuePath="Value" />
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="B2CW"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="15"
+                      Visibility="{Binding Path=B2CWSingle_IsCollapse}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Column Web Single-Connection"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto">
+                        <Grid Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="150*" />
+                                <ColumnDefinition Width="80*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Objects" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="#" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Component" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="4"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Bolt/Welds" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="5"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Angle" />
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="10,6,5,5"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsChecked}">
+                                <interact:Interaction.Triggers>
+                                    <interact:EventTrigger EventName="Checked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                    </interact:EventTrigger>
+                                    <interact:EventTrigger EventName="Unchecked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                    </interact:EventTrigger>
+                                </interact:Interaction.Triggers>
+                            </CheckBox>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="Angle"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding B2CW_SingleCollectionCount}"
+                                       TextAlignment="Center" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                      SelectedValue="{Binding Component}"
+                                      SelectedValuePath="Value" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="4"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                      SelectedValuePath="Value" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="5"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                      SelectedValue="{Binding AngleType}"
+                                      SelectedValuePath="Value" />
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="B2CW_Multi"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="15"
+                      Visibility="{Binding Path=B2CWMulti_IsCollapse}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Column Web Multi-Connection"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto">
+                        <Grid Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="150*" />
+                                <ColumnDefinition Width="80*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Objects" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="#" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Component" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="4"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Bolt/Welds" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="5"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Angle" />
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="10,6,5,5"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsChecked}">
+                                <interact:Interaction.Triggers>
+                                    <interact:EventTrigger EventName="Checked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                    </interact:EventTrigger>
+                                    <interact:EventTrigger EventName="Unchecked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                    </interact:EventTrigger>
+                                </interact:Interaction.Triggers>
+                            </CheckBox>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="Angle"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding B2CW_MultiCollectionCount}"
+                                       TextAlignment="Center" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                      SelectedValue="{Binding Component}"
+                                      SelectedValuePath="Value" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="4"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                      SelectedValuePath="Value" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="5"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                      SelectedValue="{Binding AngleType}"
+                                      SelectedValuePath="Value" />
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+                <Grid x:Name="B2CF"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="15"
+                      Visibility="{Binding Path=B2CF_IsCollapsed}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <TextBlock Width="Auto"
+                                   Height="25"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"
+                                   Text="Beam to Column Flange Multi-Connection"
+                                   TextAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="1"
+                                Width="Auto"
+                                Height="Auto">
+                        <Grid Grid.Row="1"
+                              Width="Auto"
+                              Height="Auto"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="150*" />
+                                <ColumnDefinition Width="80*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                                <ColumnDefinition Width="180*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Objects" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="#" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="3"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Component" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="4"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Bolt/Welds" />
+                            <TextBlock Grid.Row="0"
+                                       Grid.Column="5"
+                                       Width="Auto"
+                                       HorizontalAlignment="Center"
+                                       Text="Angle" />
+
+                            <CheckBox Grid.Row="1"
+                                      Grid.Column="0"
+                                      Margin="10,6,5,5"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Center"
+                                      HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      IsChecked="{Binding IsChecked}">
+                                <interact:Interaction.Triggers>
+                                    <interact:EventTrigger EventName="Checked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
+                                    </interact:EventTrigger>
+                                    <interact:EventTrigger EventName="Unchecked">
+                                        <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" />
+                                    </interact:EventTrigger>
+                                </interact:Interaction.Triggers>
+                            </CheckBox>
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="Angle"
+                                       TextAlignment="Center" />
+
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="2"
+                                       Width="Auto"
+                                       Margin="5"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding B2CF_CollectionCount}"
+                                       TextAlignment="Center" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="3"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
+                                      SelectedValue="{Binding Component}"
+                                      SelectedValuePath="Value" />
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="4"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
+                                      SelectedValue="{Binding BoltWeldOrientation}"
+                                      SelectedValuePath="Value" />
+
+                            <ComboBox Grid.Row="1"
+                                      Grid.Column="5"
+                                      Width="Auto"
+                                      Margin="5"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Description"
+                                      ItemsSource="{Binding Source={converter:Enum {x:Type converter:AngleTypes}}}"
+                                      SelectedValue="{Binding AngleType}"
+                                      SelectedValuePath="Value" />
+
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </DockPanel>
+</Window>
+
+
+
+
+<!--  old  -->
+<!--<Grid x:Name="GridB2BW"
+                      Width="Auto"
+                      Height="Auto"
+                      Margin="0,15,0,15"
+                      Visibility="Collapsed">
+    <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -169,11 +855,12 @@
                                                 Header="Objects" />
                                 <GridViewColumn Width="150" Header="Components">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbComponents"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbComponents"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
                                                       SelectedValue="{Binding Component}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
@@ -184,11 +871,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Types">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbTypes"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbTypes"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
                                                       SelectedValue="{Binding BoltWeldOrientation}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
@@ -200,11 +888,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Angle">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbAngle"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbAngle"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
                                                       SelectedValue="{Binding AngleType}" />-->
+<!--
 
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
@@ -218,12 +907,12 @@
                         </ListView.View>
                     </ListView>
 
-                </Grid>
-                <Grid x:Name="GridB2CW"
+</Grid>-->
+<!--<Grid.RowDefinitions>
+<Grid x:Name="GridB2CW"
                       Width="Auto"
                       Height="Auto"
                       Margin="0,15,0,15">
-                    <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -274,11 +963,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Components">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbComponents"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbComponents"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
                                                       SelectedValue="{Binding Component}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
@@ -289,11 +979,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Types">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbTypes"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbTypes"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
                                                       SelectedValue="{Binding BoltWeldOrientation}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
@@ -304,11 +995,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Angle">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbAngle"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbAngle"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
                                                       SelectedValue="{Binding AngleType}" />-->
+<!--
 
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
@@ -321,12 +1013,16 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                </Grid>
-                <Grid x:Name="GridB2CF"
+</Grid>-->
+<!--<Grid x:Name="GridB2CF"
                       Width="Auto"
                       Height="Auto"
                       Margin="0,15,0,15">
-                    <Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="8*" />
+        <ColumnDefinition Width="97*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -378,11 +1074,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Components">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbComponents"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbComponents"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumComponentTypes}}"
                                                       SelectedValue="{Binding Component}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:ComponentType}}}"
@@ -393,11 +1090,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Types">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbTypes"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbTypes"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumBoltWeldOrientation}}"
                                                       SelectedValue="{Binding BoltWeldOrientation}" />-->
+<!--
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
                                                       ItemsSource="{Binding Source={converter:Enum {x:Type converter:BoltWeldOrientation}}}"
@@ -408,11 +1106,12 @@
                                 </GridViewColumn>
                                 <GridViewColumn Width="150" Header="Angle">
                                     <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <!--<ComboBox x:Name="cmbAngle"
+                                        <DataTemplate>-->
+<!--<ComboBox x:Name="cmbAngle"
                                                       Width="135"
                                                       ItemsSource="{Binding Source={StaticResource enumAngleTypes}}"
                                                       SelectedValue="{Binding AngleType}" />-->
+<!--
 
                                             <ComboBox Width="135"
                                                       DisplayMemberPath="Description"
@@ -425,10 +1124,4 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                </Grid>
-
-            </StackPanel>
-        </ScrollViewer>
-
-    </DockPanel>
-</Window>
+</Grid>-->
