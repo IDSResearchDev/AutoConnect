@@ -194,7 +194,7 @@
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsChecked}">
+                                      IsChecked="{Binding Included_BTBWS}">
                                 <interact:Interaction.Triggers>
                                     <interact:EventTrigger EventName="Checked">
                                         <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
@@ -329,7 +329,7 @@
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsChecked}">
+                                      IsChecked="{Binding Included_BTBWD}">
                                 <interact:Interaction.Triggers>
                                     <interact:EventTrigger EventName="Checked">
                                         <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
@@ -464,7 +464,7 @@
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsChecked}">
+                                      IsChecked="{Binding Included_BTCWS}">
                                 <interact:Interaction.Triggers>
                                     <interact:EventTrigger EventName="Checked">
                                         <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
@@ -599,7 +599,7 @@
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsChecked}">
+                                      IsChecked="{Binding Included_BTCWD}">
                                 <interact:Interaction.Triggers>
                                     <interact:EventTrigger EventName="Checked">
                                         <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />
@@ -734,7 +734,7 @@
                                       VerticalAlignment="Center"
                                       HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
-                                      IsChecked="{Binding IsChecked}">
+                                      IsChecked="{Binding Included_BTCFS}">
                                 <interact:Interaction.Triggers>
                                     <interact:EventTrigger EventName="Checked">
                                         <interact:InvokeCommandAction Command="{Binding ElementName=vm, Path=CheckBox_CheckChanged}" CommandParameter="{Binding Path=ConnectingObjects}" />

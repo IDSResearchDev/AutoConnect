@@ -354,6 +354,7 @@ namespace AutoConnect.Model
             var axis = perLevel[0].Secondary.Type;
             var pair = new ConnectionSetting
             {
+                IsChecked = true,
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
                 PrimaryId = key.PrimaryId,
@@ -389,9 +390,12 @@ namespace AutoConnect.Model
             var axis = secondary.Type;
             var pair1 = new ConnectionSetting
             {
+                IsChecked = true,
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
+                PrimaryId = key.PrimaryId,
                 SecondaryObject = secondary.ObjSource,
+                SecondaryId = secondary.Id,
                 SecondaryObjects = null,
                 ConnectingObjects = GetConnectedObjects(key.PrimaryId.ToString(), secondary.Id.ToString())
             };
@@ -434,6 +438,7 @@ namespace AutoConnect.Model
         {
             var multiCon = new ConnectionSetting
             {
+                IsChecked = true,
                 IsSingleConnection = false,
                 PrimaryObject = key.Primary.ObjSource,
                 PrimaryId = key.PrimaryId,
@@ -446,6 +451,7 @@ namespace AutoConnect.Model
 
             var pair1 = new ConnectionSetting
             {
+                IsChecked = true,
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
                 PrimaryId = key.PrimaryId,               
@@ -458,6 +464,7 @@ namespace AutoConnect.Model
 
             var pair2 = new ConnectionSetting
             {
+                IsChecked = true,
                 IsSingleConnection = true,
                 PrimaryObject = key.Primary.ObjSource,
                 PrimaryId = key.PrimaryId,

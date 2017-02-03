@@ -90,6 +90,46 @@ namespace AutoConnect.ViewModel
 
         }
 
+        private bool _included_BTBWS = true;
+        public bool Included_BTBWS
+        {
+            get { return _included_BTBWS; }
+            set { SetProperty(ref _included_BTBWS, value); }
+
+        }
+
+        private bool _included_BTBWD = true;
+        public bool Included_BTBWD
+        {
+            get { return _included_BTBWD; }
+            set { SetProperty(ref _included_BTBWD, value); }
+
+        }
+
+        private bool _included_BTCWS = true;
+        public bool Included_BTCWS
+        {
+            get { return _included_BTCWS; }
+            set { SetProperty(ref _included_BTCWS, value); }
+
+        }
+
+        private bool _included_BTCWD = true;
+        public bool Included_BTCWD
+        {
+            get { return _included_BTCWD; }
+            set { SetProperty(ref _included_BTCWD, value); }
+
+        }
+
+        private bool _included_BTCFS = true;
+        public bool Included_BTCFS
+        {
+            get { return _included_BTCFS; }
+            set { SetProperty(ref _included_BTCFS, value); }
+
+        }
+
         private ObservableCollection<string> _componentTypes;
         public ObservableCollection<string> ComponentTypes
         {
@@ -151,7 +191,7 @@ namespace AutoConnect.ViewModel
                     //Do some sh!t
                     Selection = new ArrayList();
                     CreateModelObjects();
-
+                   
                 });
             }
         }
@@ -162,9 +202,12 @@ namespace AutoConnect.ViewModel
             {
                 return new DelegateCommand(() =>
                 {
-                    ApplyConnection(BeamToBeamWebCollection);
-                    ApplyConnection(BeamToColumnWebCollection);
-                    ApplyConnection(BeamToColumnFlangeCollection);
+                    FilterConnection();
+                    if (Included_BTBWD && BeamToBeamWebDoubleCollection.Count > 0) { ApplyConnection(BeamToBeamWebDoubleCollection); }
+                    if (Included_BTBWS && BeamToBeamWebCollection.Count > 0) { ApplyConnection(BeamToBeamWebCollection); }
+                    if (Included_BTCWD && BeamToColumnWebDoubleCollection.Count > 0) { ApplyConnection(BeamToColumnWebDoubleCollection); }
+                    if (Included_BTCWS && BeamToColumnWebCollection.Count > 0) { ApplyConnection(BeamToColumnWebCollection); }
+                    if (Included_BTCFS && BeamToColumnFlangeCollection.Count > 0) { ApplyConnection(BeamToColumnFlangeCollection); }
                 });
             }
         }
@@ -194,6 +237,68 @@ namespace AutoConnect.ViewModel
 
             model.CommitChanges();
         }
+
+        private void FilterConnection()
+        {
+            if(Included_BTBWD && Included_BTBWS)
+            {
+                foreach (var item in BeamToBeamWebDoubleCollection)
+                {
+                   BeamToBeamWebCollection.Where(x => x.PrimaryId == item.PrimaryId && (x.SecondaryId == item.SecondaryIds[0] || x.SecondaryId == item.SecondaryIds[1])).Select(c => { c.IsChecked = false; return c; }).ToList();                                        
+                }
+            }
+
+            if (!Included_BTBWD && Included_BTBWS)
+            {
+                foreach (var item in BeamToBeamWebDoubleCollection)
+                {
+                    BeamToBeamWebCollection.Where(x => x.PrimaryId == item.PrimaryId && (x.SecondaryId == item.SecondaryIds[0] || x.SecondaryId == item.SecondaryIds[1])).Select(c => { c.IsChecked = true; return c; }).ToList();
+                }
+            }
+
+            if (Included_BTCWD && Included_BTCWS)
+            {
+                foreach (var item in BeamToColumnWebDoubleCollection)
+                {
+                    BeamToColumnWebCollection.Where(x => x.PrimaryId == item.PrimaryId && (x.SecondaryId == item.SecondaryIds[0] || x.SecondaryId == item.SecondaryIds[1])).Select(c => { c.IsChecked = false; return c; }).ToList();
+                }
+            }
+
+            if (!Included_BTCWD && Included_BTCWS)
+            {
+                foreach (var item in BeamToColumnWebDoubleCollection)
+                {
+                    BeamToColumnWebCollection.Where(x => x.PrimaryId == item.PrimaryId && (x.SecondaryId == item.SecondaryIds[0] || x.SecondaryId == item.SecondaryIds[1])).Select(c => { c.IsChecked = true; return c; }).ToList();
+                }
+            }
+
+
+            if ((Included_BTCWD || Included_BTCWS) && Included_BTBWS)
+            {
+                foreach (var item in BeamToColumnWebCollection)
+                {
+                    var secs = BeamToColumnFlangeCollection.Where(x => x.PrimaryId == item.PrimaryId).Select(b => b).ToList();
+                    foreach (var sec in secs)
+                    {
+                        BeamToBeamWebCollection.Where(x => (x.PrimaryId == item.SecondaryId && x.SecondaryId == sec.SecondaryId) || (x.PrimaryId == sec.SecondaryId && x.SecondaryId == item.SecondaryId)).Select(c => { c.IsChecked = false; return c; }).ToList();
+                    }
+                }
+            }
+
+            if (!(Included_BTCWD || Included_BTCWS) && Included_BTBWS)
+            {
+                foreach (var item in BeamToColumnWebCollection)
+                {
+                    var secs = BeamToColumnFlangeCollection.Where(x => x.PrimaryId == item.PrimaryId).Select(b => b).ToList();
+                    foreach (var sec in secs)
+                    {
+                        BeamToBeamWebCollection.Where(x => (x.PrimaryId == item.SecondaryId && x.SecondaryId == sec.SecondaryId) || (x.PrimaryId == sec.SecondaryId && x.SecondaryId == item.SecondaryId)).Select(c => { c.IsChecked = true; return c; }).ToList();
+                    }
+                }
+            }
+
+        }
+
 
         private string GetJobCodeOnProjectName(string modelname)
         {
